@@ -29,9 +29,17 @@ button:hover{filter:brightness(1.2)}.actions{display:flex;gap:8px;justify-conten
 #info .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
 #inventory{position:fixed;top:90px;right:14px;padding:10px 13px;min-width:145px;font-size:12px;display:none}
 #inventory b{color:var(--green)}#toast{position:fixed;top:75px;left:50%;transform:translateX(-50%);padding:8px 14px;display:none;font-size:12px}
-#mobile{display:none;position:fixed;bottom:18px;left:18px;gap:8px}
-#mobile button{width:48px;height:48px;padding:0;background:#0b314dcc}
-@media(max-width:700px){#help{font-size:10px;max-width:210px}#stats{font-size:10px}#mobile{display:flex;flex-wrap:wrap;width:160px}#info{bottom:82px}}
+#mobile{display:none;position:fixed;inset:0;z-index:4;pointer-events:none}
+#stickBase{position:absolute;left:22px;bottom:22px;width:142px;height:142px;border-radius:50%;border:2px solid #8deaff99;background:#071a2dcc;box-shadow:0 0 25px #00cfff33;pointer-events:auto;touch-action:none}
+#stickKnob{position:absolute;left:41px;top:41px;width:56px;height:56px;border-radius:50%;background:linear-gradient(145deg,#7deaff,#167caa);border:2px solid #d8faff;box-shadow:0 4px 18px #0009;pointer-events:none}
+#lookZone{position:absolute;right:0;top:15%;width:48%;height:65%;pointer-events:auto;touch-action:none;background:transparent}
+#touchActions{position:absolute;right:18px;bottom:18px;display:flex;gap:10px;pointer-events:auto}
+#touchActions button{width:64px;height:64px;border-radius:50%;padding:4px;font-size:12px;font-weight:700;background:linear-gradient(145deg,#087e9b,#123d69);box-shadow:0 4px 16px #0009;touch-action: manipulation}
+#rotate{display:none;position:fixed;inset:0;z-index:8;background:#06101df2;place-items:center;text-align:center;padding:28px}
+#rotate .panel{padding:24px;max-width:330px;line-height:2}
+@media(max-width:900px){#help{display:none}#stats{font-size:10px}#mobile{display:block}#info{bottom:95px;right:10px;width:min(300px,calc(100vw - 20px));z-index:6}#top{top:6px;left:6px;right:6px}#brand{font-size:11px;padding:7px 9px}#inventory{top:54px;right:7px}#prompt{top:48%;font-size:11px}}
+@media (orientation:portrait) and (max-width:900px){#rotate{display:grid}}
+@media (orientation:landscape) and (max-width:900px){#rotate{display:none}}
 </style>
 </head>
 <body>
@@ -42,8 +50,9 @@ button:hover{filter:brightness(1.2)}.actions{display:flex;gap:8px;justify-conten
 <div id="inventory" class="panel">دست شما: <b id="held">خالی</b></div>
 <div id="info" class="panel"><h3 id="infoTitle">عنوان</h3><p id="infoText"></p><div class="row"><button id="takeBtn">برداشتن</button><button id="closeInfo">بستن</button></div></div>
 <div id="toast" class="panel"></div>
-<div id="mobile"><button data-move="forward">▲</button><button data-move="left">◀</button><button data-move="back">▼</button><button data-move="right">▶</button></div>
-<div id="start"><div class="card panel"><h1>آزمایشگاه پزشکی 3D</h1><div class="sub">یک محیط آموزشی سه‌بعدی بزرگ برای گشت‌وگذار، شناخت ابزارهای پزشکی، مشاهده نمونه‌ها زیر میکروسکوپ و آشنایی مقدماتی با آناتومی بدن.<br><br>برای تجربه کامل‌تر از رایانه استفاده کن. در موبایل، حرکت لمسی آزمایشی است.</div><div class="actions"><button id="enter">ورود به آزمایشگاه</button><button id="music">♫ موسیقی: خاموش</button></div><p style="font-size:11px;color:#9cb9c9;margin-top:14px">نسخه اولیه قابل توسعه — محتوای آموزشی و مدل‌های آناتومی در مراحل بعدی گسترش می‌یابند.</p></div></div>
+<div id="mobile"><div id="stickBase"><div id="stickKnob"></div></div><div id="lookZone" aria-label="برای چرخاندن دوربین انگشت را بکشید"></div><div id="touchActions"><button id="touchUse">تعامل</button><button id="touchTake">بردار / رها</button></div></div>
+<div id="rotate"><div class="panel"><div style="font-size:42px">📱 ↻</div><h2 style="color:#6cecff">گوشی را افقی کن</h2>برای تجربه بهتر آزمایشگاه، صفحه را به حالت افقی بچرخان؛ کنترل آنالوگ و چرخاندن دوربین در پایین و سمت راست صفحه قرار دارند.</div></div>
+<div id="start"><div class="card panel"><h1>آزمایشگاه پزشکی 3D</h1><div class="sub">یک محیط آموزشی سه‌بعدی بزرگ برای گشت‌وگذار، شناخت ابزارهای پزشکی، مشاهده نمونه‌ها زیر میکروسکوپ و آشنایی مقدماتی با آناتومی بدن.<br><br>با گوشی در حالت افقی بازی کن؛ با آنالوگ حرکت کن و با کشیدن انگشت در سمت راست، دوربین را بچرخان.</div><div class="actions"><button id="enter">ورود به آزمایشگاه</button><button id="music">♫ موسیقی: خاموش</button></div><p style="font-size:11px;color:#9cb9c9;margin-top:14px">نسخه اولیه قابل توسعه — محتوای آموزشی و مدل‌های آناتومی در مراحل بعدی گسترش می‌یابند.</p></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r160/three.min.js"></script>
 <script>
 (()=>{
@@ -110,17 +119,19 @@ for(const [x,z,n] of [[-16,0,'زیست‌شناسی'],[16,0,'شیمی'],[0,-16,'
 for(let i=0;i<12;i++){const x=-52+(i%6)*4.1,z=12+Math.floor(i/6)*4;box(scene,x,1,z,2.6,2,.9,mats.white);for(let j=0;j<3;j++){box(scene,x,0.45+j*.55,z-.48,2.4,.04,.04,mats.metal);box(scene,x,0.45+j*.55,z-.56,.22,.08,.08,mats.gold)}}
 for(let i=0;i<10;i++){const x=24+(i%5)*4,z=18+Math.floor(i/5)*4;const m=box(scene,x,.7,z,1.4,1.4,1.4,[mats.blue,mats.green,mats.gold,mats.red][i%4]);register(m,'جعبه تجهیزات '+(i+1),'جعبه نگهداری ابزار و مواد آموزشی آزمایشگاه.','item',300+i*30)}
 // physics / controls
-const keys={};let yaw=0,pitch=0,locked=false,held=null,near=null,musicOn=false,audio=null,osc=null;
+const keys={};let yaw=0,pitch=0,locked=false,gameActive=false,held=null,near=null,musicOn=false,audio=null,osc=null;let joyX=0,joyY=0,touchLookId=null,lastLookX=0,lastLookY=0;
 camera.rotation.order='YXZ';
 function sound(freq=440,duration=.12){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.08,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+duration)}catch(e){}}
 function music(){audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(musicOn){if(osc){osc.stop();osc=null}musicOn=false;$('music').textContent='♫ موسیقی: خاموش';return}musicOn=true;$('music').textContent='♫ موسیقی: روشن';osc=audio.createOscillator();const gain=audio.createGain();osc.type='sine';osc.frequency.value=110;gain.gain.value=.018;osc.connect(gain);gain.connect(audio.destination);osc.start()}
 $('music').onclick=music;
-$('enter').onclick=()=>{$('start').style.display='none';renderer.domElement.requestPointerLock?.();sound(520,.18)};
+$('enter').onclick=()=>{gameActive=true;$('start').style.display='none';sound(520,.18);if(innerWidth>900){renderer.domElement.requestPointerLock?.()}else{document.documentElement.requestFullscreen?.().catch(()=>{});screen.orientation?.lock?.('landscape').catch(()=>{});}};
 document.addEventListener('pointerlockchange',()=>{locked=document.pointerLockElement===renderer.domElement});
 document.addEventListener('mousemove',e=>{if(!locked)return;yaw-=e.movementX*.0022;pitch-=e.movementY*.0022;pitch=Math.max(-1.35,Math.min(1.35,pitch));camera.rotation.set(pitch,yaw,0)});
+const lookZone=$('lookZone');lookZone.addEventListener('pointerdown',e=>{if(!gameActive)return;touchLookId=e.pointerId;lastLookX=e.clientX;lastLookY=e.clientY;lookZone.setPointerCapture(e.pointerId)});lookZone.addEventListener('pointermove',e=>{if(e.pointerId!==touchLookId)return;const dx=e.clientX-lastLookX,dy=e.clientY-lastLookY;lastLookX=e.clientX;lastLookY=e.clientY;yaw-=dx*.006;pitch=Math.max(-1.3,Math.min(1.3,pitch-dy*.005));camera.rotation.set(pitch,yaw,0)});const endLook=e=>{if(e.pointerId===touchLookId)touchLookId=null};lookZone.addEventListener('pointerup',endLook);lookZone.addEventListener('pointercancel',endLook);
 document.addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='KeyE')interact();if(e.code==='KeyQ')dropOrTake()});
 document.addEventListener('keyup',e=>keys[e.code]=false);
-renderer.domElement.addEventListener('click',()=>{if(!$('start').style.display||$('start').style.display==='none'){if(!locked)renderer.domElement.requestPointerLock?.();else interact()}});
+renderer.domElement.addEventListener('click',()=>{if(!gameActive)return;if(innerWidth>900){if(!locked)renderer.domElement.requestPointerLock?.();else interact()}});
+$('touchUse').addEventListener('click',interact);$('touchTake').addEventListener('click',dropOrTake);
 const ray=new THREE.Raycaster();const dir=new THREE.Vector3();
 function findNear(){camera.getWorldDirection(dir);ray.set(camera.position,dir);const hits=ray.intersectObjects(interactables,true);let found=null;for(const h of hits){let o=h.object;while(o&&!o.userData.interactable)o=o.parent;if(o&&h.distance<5){found=o;break}}return found}
 function showInfo(o){$('infoTitle').textContent=o.userData.name;$('infoText').textContent=o.userData.desc;$('info').style.display='block';$('takeBtn').style.display=['item'].includes(o.userData.type)?'inline-block':'none';$('takeBtn').onclick=()=>{held=o;scene.attach(o);o.position.set(0,-.25,-1.15);o.rotation.set(0,0,0);o.scale.setScalar(.55);$('held').textContent=o.userData.name;$('inventory').style.display='block';$('info').style.display='none';sound(o.userData.sound,.16);toast('وسیله برداشته شد؛ برای گذاشتن Q را بزن.')}}
@@ -129,11 +140,11 @@ function dropOrTake(){if(held){const obj=held;scene.attach(obj);obj.position.cop
 function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
 $('closeInfo').onclick=()=>$('info').style.display='none';
 const clock=new THREE.Clock();
-function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);near=findNear();$('prompt').style.opacity=near?'1':'0';$('prompt').textContent=near?'E / کلیک — '+near.userData.name:'';if(locked){const speed=(keys.ShiftLeft?9:5)*dt;const forward=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw));const right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw));if(keys.KeyW)camera.position.addScaledVector(forward,speed);if(keys.KeyS)camera.position.addScaledVector(forward,-speed);if(keys.KeyA)camera.position.addScaledVector(right,-speed);if(keys.KeyD)camera.position.addScaledVector(right,speed);camera.position.x=THREE.MathUtils.clamp(camera.position.x,-58,58);camera.position.z=THREE.MathUtils.clamp(camera.position.z,-58,58);camera.position.y=1.7}
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);near=findNear();$('prompt').style.opacity=near?'1':'0';$('prompt').textContent=near?'E / کلیک — '+near.userData.name:'';if(gameActive&&(locked||innerWidth<=900)){const speed=(keys.ShiftLeft?9:5)*dt;const forward=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw));const right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw));const mx=joyX,my=joyY;if(keys.KeyW||my<-.18)camera.position.addScaledVector(forward,speed*Math.max(keys.KeyW?1:0,-my));if(keys.KeyS||my>.18)camera.position.addScaledVector(forward,-speed*Math.max(keys.KeyS?1:0,my));if(keys.KeyA||mx<-.18)camera.position.addScaledVector(right,-speed*Math.max(keys.KeyA?1:0,-mx));if(keys.KeyD||mx>.18)camera.position.addScaledVector(right,speed*Math.max(keys.KeyD?1:0,mx));camera.position.x=THREE.MathUtils.clamp(camera.position.x,-58,58);camera.position.z=THREE.MathUtils.clamp(camera.position.z,-58,58);camera.position.y=1.7}
 if(held){const p=new THREE.Vector3(0,-.25,-1.1).applyQuaternion(camera.quaternion).add(camera.position);held.position.lerp(p,.35);held.quaternion.copy(camera.quaternion)}
 renderer.render(scene,camera)}
 animate();
-$('mobile').querySelectorAll('button').forEach(b=>{const k={forward:'KeyW',back:'KeyS',left:'KeyA',right:'KeyD'}[b.dataset.move];b.addEventListener('touchstart',e=>{e.preventDefault();keys[k]=true});['touchend','touchcancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false))});
+const stick=$('stickBase'),knob=$('stickKnob');let stickId=null;function updateStick(e){const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy;const max=48,len=Math.hypot(dx,dy);if(len>max){dx=dx/len*max;dy=dy/len*max}joyX=dx/max;joyY=dy/max;knob.style.transform=`translate(${dx}px,${dy}px)`}stick.addEventListener('pointerdown',e=>{if(!gameActive)return;stickId=e.pointerId;stick.setPointerCapture(e.pointerId);updateStick(e)});stick.addEventListener('pointermove',e=>{if(e.pointerId===stickId)updateStick(e)});function releaseStick(e){if(e.pointerId!==stickId)return;stickId=null;joyX=joyY=0;knob.style.transform='translate(0,0)'}stick.addEventListener('pointerup',releaseStick);stick.addEventListener('pointercancel',releaseStick);
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 })();
 </script>
