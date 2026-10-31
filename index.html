@@ -2,150 +2,201 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>آزمایشگاه سه‌بعدی علوم پزشکی</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#07131f">
+<title>آزمایشگاه جامع پزشکی | 3D Medical Lab</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap');
-:root{--glass:rgba(8,18,35,.82);--line:rgba(123,220,255,.32);--cyan:#6cecff;--green:#72ffc1;--gold:#ffd36b}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07101c;color:#effaff;font-family:Vazirmatn,Tahoma,sans-serif}
-#game{position:fixed;inset:0}canvas{display:block}
-.panel{background:var(--glass);border:1px solid var(--line);border-radius:15px;backdrop-filter:blur(12px);box-shadow:0 10px 35px #0007}
-#top{position:fixed;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;pointer-events:none}
-#brand{padding:10px 15px;font-weight:800;color:var(--cyan);font-size:15px}
-#stats{padding:9px 13px;font-size:12px;line-height:1.9;text-align:left}
-#help{position:fixed;bottom:14px;left:14px;padding:11px 14px;font-size:12px;line-height:1.9;max-width:290px}
-#prompt{position:fixed;left:50%;top:58%;transform:translate(-50%,-50%);font-size:13px;color:#fff;background:#071522cc;padding:8px 14px;border:1px solid #6cecff88;border-radius:30px;pointer-events:none;opacity:0;transition:.15s}
-#cross{position:fixed;left:50%;top:50%;width:12px;height:12px;transform:translate(-50%,-50%);pointer-events:none}
-#cross:before,#cross:after{content:"";position:absolute;background:#d9fbff;box-shadow:0 0 5px #00d9ff}
-#cross:before{width:2px;height:12px;left:5px}#cross:after{height:2px;width:12px;top:5px}
-#start{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(ellipse at center,#14334b99,#020812ed);z-index:5}
-#start .card{max-width:560px;margin:18px;padding:28px;text-align:center}
-h1{font-size:clamp(23px,5vw,36px);margin:0 0 10px;color:var(--cyan)}
-.sub{color:#c3dce9;line-height:2;font-size:14px}
-button{font:inherit;border:1px solid #67e8ff88;background:linear-gradient(135deg,#087e9b,#125a86);color:white;padding:10px 18px;border-radius:10px;cursor:pointer}
-button:hover{filter:brightness(1.2)}.actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-#info{position:fixed;right:14px;bottom:14px;width:min(340px,calc(100vw - 28px));padding:14px;display:none}
-#info h3{margin:0 0 6px;color:var(--cyan)}#info p{font-size:13px;line-height:1.9;margin:5px 0;color:#d8eaf2}
-#info .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
-#inventory{position:fixed;top:90px;right:14px;padding:10px 13px;min-width:145px;font-size:12px;display:none}
-#inventory b{color:var(--green)}#toast{position:fixed;top:75px;left:50%;transform:translateX(-50%);padding:8px 14px;display:none;font-size:12px}
-#mobile{display:none;position:fixed;inset:0;z-index:4;pointer-events:none}
-#stickBase{position:absolute;left:22px;bottom:22px;width:142px;height:142px;border-radius:50%;border:2px solid #8deaff99;background:#071a2dcc;box-shadow:0 0 25px #00cfff33;pointer-events:auto;touch-action:none}
-#stickKnob{position:absolute;left:41px;top:41px;width:56px;height:56px;border-radius:50%;background:linear-gradient(145deg,#7deaff,#167caa);border:2px solid #d8faff;box-shadow:0 4px 18px #0009;pointer-events:none}
-#lookZone{position:absolute;right:0;top:15%;width:48%;height:65%;pointer-events:auto;touch-action:none;background:transparent}
-#touchActions{position:absolute;right:18px;bottom:18px;display:flex;gap:10px;pointer-events:auto}
-#touchActions button{width:64px;height:64px;border-radius:50%;padding:4px;font-size:12px;font-weight:700;background:linear-gradient(145deg,#087e9b,#123d69);box-shadow:0 4px 16px #0009;touch-action: manipulation}
-#rotate{display:none;position:fixed;inset:0;z-index:8;background:#06101df2;place-items:center;text-align:center;padding:28px}
-#rotate .panel{padding:24px;max-width:330px;line-height:2}
-@media(max-width:900px){#help{display:none}#stats{font-size:10px}#mobile{display:block}#info{bottom:95px;right:10px;width:min(300px,calc(100vw - 20px));z-index:6}#top{top:6px;left:6px;right:6px}#brand{font-size:11px;padding:7px 9px}#inventory{top:54px;right:7px}#prompt{top:48%;font-size:11px}}
-@media (orientation:portrait) and (max-width:900px){#rotate{display:grid}}
-@media (orientation:landscape) and (max-width:900px){#rotate{display:none}}
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+:root{--cyan:#79e9ff;--mint:#84ffd1;--glass:rgba(7,18,31,.82);--edge:rgba(121,233,255,.26);--safeB:env(safe-area-inset-bottom,0px);--safeT:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06111c;color:#eaf8ff;font-family:Vazirmatn,Tahoma,sans-serif;overscroll-behavior:none}button{font:inherit;color:inherit;border:1px solid rgba(121,233,255,.42);background:linear-gradient(145deg,#12617b,#123b5b);border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;touch-action:manipulation;user-select:none}button:active{filter:brightness(1.35);transform:scale(.98)}button:disabled{opacity:.45}#game{position:fixed;inset:0;z-index:0}canvas{display:block;width:100%;height:100%;touch-action:none}
+.glass{background:var(--glass);border:1px solid var(--edge);border-radius:14px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 26px #0007}
+#hud{position:fixed;inset:calc(8px + var(--safeT)) 10px auto;z-index:5;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;pointer-events:none}#hud>*{pointer-events:auto}#brand{padding:8px 12px;color:var(--cyan);font-weight:800;font-size:clamp(10px,1.5vw,15px)}#status{padding:7px 11px;font-size:11px;line-height:1.7;text-align:left;min-width:130px}#hudBtns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}#hudBtns button{padding:7px 10px;font-size:11px;background:rgba(9,30,47,.9)}
+#reticle{position:fixed;z-index:2;left:50%;top:50%;width:15px;height:15px;transform:translate(-50%,-50%);pointer-events:none;opacity:.9}#reticle:before,#reticle:after{content:"";position:absolute;background:#d9fbff;box-shadow:0 0 7px #16d9ff}#reticle:before{width:2px;height:15px;left:6px}#reticle:after{height:2px;width:15px;top:6px}#targetPrompt{position:fixed;z-index:4;left:50%;top:calc(50% + 24px);transform:translateX(-50%);padding:6px 13px;font-size:12px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s}
+#mobileControls{position:fixed;inset:0;z-index:4;pointer-events:none;display:none}#lookZone{position:absolute;right:0;top:72px;bottom:calc(112px + var(--safeB));width:53%;pointer-events:auto;touch-action:none;background:transparent}#stickBase{position:absolute;left:calc(19px + env(safe-area-inset-left,0px));bottom:calc(18px + var(--safeB));width:138px;height:138px;border-radius:50%;border:2px solid #9befff99;background:radial-gradient(circle,#153a51cc,#061728df);box-shadow:0 0 25px #00bde933,inset 0 0 22px #5be6ff15;pointer-events:auto;touch-action:none}#stickBase:after{content:"";position:absolute;inset:23px;border:1px dashed #b0eeff35;border-radius:50%}#stickKnob{position:absolute;left:39px;top:39px;width:58px;height:58px;border-radius:50%;background:linear-gradient(145deg,#a6f5ff,#1685ad);border:2px solid #e1fbff;box-shadow:0 5px 18px #0009;pointer-events:none;will-change:transform}#touchActions{position:absolute;right:calc(17px + env(safe-area-inset-right,0px));bottom:calc(17px + var(--safeB));display:flex;gap:8px;pointer-events:auto;align-items:flex-end}#touchActions button{width:62px;height:62px;border-radius:50%;padding:4px;font-size:11px;line-height:1.35;box-shadow:0 5px 16px #0008;background:linear-gradient(145deg,#147b9d,#102e51);touch-action:manipulation}#touchActions button.primary{background:linear-gradient(145deg,#15a0aa,#14617b);border-color:#8bf5ff}#touchActions button.small{width:48px;height:48px;font-size:10px;background:linear-gradient(145deg,#354f63,#152b40)}
+#details{position:fixed;z-index:8;left:50%;bottom:calc(98px + var(--safeB));transform:translateX(-50%);width:min(390px,76vw);max-height:min(42dvh,330px);overflow:auto;display:none;padding:14px 16px;overscroll-behavior:contain}#details h3{margin:0 0 5px;color:var(--cyan);font-size:16px}#details p{font-size:12px;line-height:1.9;color:#d8eaf2;margin:5px 0;white-space:pre-line}#detailMeta{font-size:10px;color:var(--mint);margin-bottom:6px}#detailActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}#detailActions button{font-size:11px;padding:8px 12px}#inventory{position:fixed;z-index:5;right:12px;top:70px;padding:8px 11px;font-size:11px;display:none}#inventory b{color:var(--mint)}#toast{position:fixed;z-index:12;left:50%;top:calc(65px + var(--safeT));transform:translateX(-50%);padding:8px 14px;font-size:11px;display:none;max-width:90vw;text-align:center}
+#helpPanel{position:fixed;z-index:9;right:12px;top:64px;width:min(310px,86vw);padding:14px;display:none;font-size:11px;line-height:2}#helpPanel h3{margin:0;color:var(--cyan)}#helpPanel p{margin:6px 0}
+#start,#pauseScreen{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:calc(14px + var(--safeT)) 14px calc(14px + var(--safeB));overflow-y:auto;background:radial-gradient(ellipse at 50% 30%,rgba(18,71,93,.88),rgba(2,8,17,.97) 70%)}#start[hidden],#pauseScreen[hidden]{display:none}#startCard,#pauseCard{width:min(760px,100%);max-height:calc(100dvh - 28px - var(--safeT) - var(--safeB));overflow:auto;padding:clamp(18px,3vw,30px);text-align:center;flex:0 0 auto;overscroll-behavior:contain}#logo{font-size:36px;line-height:1.3}#start h1{font-size:clamp(24px,4.3vw,38px);margin:5px 0 8px;color:var(--cyan)}#start .intro{font-size:clamp(12px,1.8vw,15px);line-height:2;color:#c7dce8;margin:0 auto;max-width:650px}#features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:18px 0}#features div{padding:10px 7px;border:1px solid #82eaff25;border-radius:12px;background:#0b2435a8;font-size:11px;line-height:1.7}#features b{display:block;color:var(--mint);font-size:13px}#startActions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}#startActions button,#pauseActions button{min-width:170px;padding:12px 18px}#startNote{color:#9bb5c7;font-size:10px;line-height:1.8;margin:13px 0 0}#pauseCard{max-width:420px}#pauseCard h2{color:var(--cyan);margin-top:0}#pauseCard p{font-size:12px;line-height:2;color:#bed2df}
+#rotate{display:none;position:fixed;inset:0;z-index:30;background:#06101df5;place-items:center;text-align:center;padding:24px}#rotate .glass{padding:24px;max-width:340px;line-height:2}#rotate .phone{font-size:40px}
+#desktopHelp{position:fixed;z-index:3;bottom:12px;left:50%;transform:translateX(-50%);padding:7px 12px;font-size:10px;color:#c7dce5;white-space:nowrap;pointer-events:none}
+@media(max-width:950px){#mobileControls{display:block}#desktopHelp{display:none}#status{font-size:9px;min-width:106px}#brand{font-size:10px;padding:7px 9px}#hud{inset:calc(5px + var(--safeT)) 5px auto}#hudBtns button{font-size:9px;padding:6px 7px}#details{width:min(360px,68vw);bottom:calc(96px + var(--safeB));max-height:38dvh}#features{gap:5px}#features div{font-size:10px}}
+@media(max-width:550px){#brand{max-width:37vw;line-height:1.6}#status{display:none}#touchActions button{width:55px;height:55px}#stickBase{width:124px;height:124px}#stickKnob{left:34px;top:34px;width:54px;height:54px}#features{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(orientation:portrait) and (max-width:950px){#rotate{display:grid}}
+@media(orientation:landscape){#rotate{display:none}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div id="game"></div>
-<div id="top"><div id="brand" class="panel">⚕ آزمایشگاه جامع سه‌بعدی علوم پزشکی</div><div id="stats" class="panel">بخش: آزمایشگاه عمومی<br>وضعیت: آماده‌سازی</div></div>
-<div id="cross"></div><div id="prompt"></div>
-<div id="help" class="panel">حرکت: <b>W A S D</b> | نگاه: ماوس<br>تعامل: <b>E</b> یا کلیک | برداشتن/گذاشتن: <b>Q</b><br>دویدن: Shift | آزادکردن ماوس: Esc<br><span style="color:#7deaff">به اشیا نزدیک شو و با آن‌ها تعامل کن.</span></div>
-<div id="inventory" class="panel">دست شما: <b id="held">خالی</b></div>
-<div id="info" class="panel"><h3 id="infoTitle">عنوان</h3><p id="infoText"></p><div class="row"><button id="takeBtn">برداشتن</button><button id="closeInfo">بستن</button></div></div>
-<div id="toast" class="panel"></div>
-<div id="mobile"><div id="stickBase"><div id="stickKnob"></div></div><div id="lookZone" aria-label="برای چرخاندن دوربین انگشت را بکشید"></div><div id="touchActions"><button id="touchUse">تعامل</button><button id="touchTake">بردار / رها</button></div></div>
-<div id="rotate"><div class="panel"><div style="font-size:42px">📱 ↻</div><h2 style="color:#6cecff">گوشی را افقی کن</h2>برای تجربه بهتر آزمایشگاه، صفحه را به حالت افقی بچرخان؛ کنترل آنالوگ و چرخاندن دوربین در پایین و سمت راست صفحه قرار دارند.</div></div>
-<div id="start"><div class="card panel"><h1>آزمایشگاه پزشکی 3D</h1><div class="sub">یک محیط آموزشی سه‌بعدی بزرگ برای گشت‌وگذار، شناخت ابزارهای پزشکی، مشاهده نمونه‌ها زیر میکروسکوپ و آشنایی مقدماتی با آناتومی بدن.<br><br>با گوشی در حالت افقی بازی کن؛ با آنالوگ حرکت کن و با کشیدن انگشت در سمت راست، دوربین را بچرخان.</div><div class="actions"><button id="enter">ورود به آزمایشگاه</button><button id="music">♫ موسیقی: خاموش</button></div><p style="font-size:11px;color:#9cb9c9;margin-top:14px">نسخه اولیه قابل توسعه — محتوای آموزشی و مدل‌های آناتومی در مراحل بعدی گسترش می‌یابند.</p></div></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r160/three.min.js"></script>
+<div id="game" aria-label="محیط سه‌بعدی آزمایشگاه"></div>
+<div id="hud">
+  <div id="brand" class="glass">⚕ آزمایشگاه جامع علوم پزشکی | 3D</div>
+  <div id="status" class="glass">بخش: ورودی آزمایشگاه<br>وضعیت: آماده</div>
+  <div id="hudBtns">
+    <button id="helpBtn" type="button">راهنما</button>
+    <button id="musicBtn" type="button">♫ موزیک: خاموش</button>
+    <button id="soundBtn" type="button">صدا: روشن</button>
+    <button id="pauseBtn" type="button">Ⅱ توقف</button>
+  </div>
+</div>
+<div id="reticle"></div><div id="targetPrompt" class="glass"></div>
+<div id="inventory" class="glass">وسیله‌ی دست: <b id="heldName">خالی</b></div>
+<div id="toast" class="glass" role="status" aria-live="polite"></div>
+<div id="helpPanel" class="glass"><h3>راهنمای کنترل</h3><p>موبایل: آنالوگ پایین چپ برای حرکت؛ انگشت را روی نیمه‌ی راست صفحه بکش تا دوربین بچرخد.</p><p>دکمه‌ی «تعامل» برای بررسی وسیله و «بردار / رها» برای جابه‌جایی وسایل قابل حمل است.</p><p>رایانه: کلیدهای W A S D یا جهت‌ها، ماوس برای نگاه، E برای تعامل، Q برای برداشتن/گذاشتن، Shift برای دویدن و Esc برای آزادکردن ماوس.</p><p>برای صدای محیط، موزیک و افکت‌ها از دکمه‌های بالای صفحه استفاده کن.</p><button id="closeHelp" type="button">متوجه شدم</button></div>
+<div id="details" class="glass"><div id="detailMeta"></div><h3 id="detailTitle">عنوان وسیله</h3><p id="detailText"></p><div id="detailActions"><button id="takeBtn" type="button">برداشتن وسیله</button><button id="closeDetails" type="button">بستن</button></div></div>
+<div id="mobileControls">
+  <div id="lookZone" aria-label="برای چرخاندن دوربین انگشت را بکشید"></div>
+  <div id="stickBase" aria-label="آنالوگ حرکت"><div id="stickKnob"></div></div>
+  <div id="touchActions"><button id="touchFlash" class="small" type="button">چراغ</button><button id="touchGrab" type="button">بردار<br>رها</button><button id="touchUse" class="primary" type="button">تعامل</button></div>
+</div>
+<div id="desktopHelp" class="glass">WASD حرکت · ماوس نگاه · E تعامل · Q برداشتن / رها کردن · Shift دویدن</div>
+<div id="rotate"><div class="glass"><div class="phone">📱 ↻</div><b style="color:var(--cyan);font-size:20px">گوشی را افقی کن</b><br>برای اجرای آزمایشگاه، گوشی را بچرخان تا محیط و کنترل‌های لمسی در حالت افقی قرار بگیرند.</div></div>
+<div id="start"><div id="startCard" class="glass">
+  <div id="logo">🧪 ⚕ 🧬</div><h1>آزمایشگاه جامع پزشکی 3D</h1>
+  <p class="intro">به یک آزمایشگاه آموزشی سه‌بعدی وارد شو؛ بین میزهای کار قدم بزن، تجهیزات را از نزدیک بررسی کن، نمونه‌ها را بردار و جابه‌جا کن و در بخش‌های زیست‌شناسی، شیمی، میکروسکوپی، استریلیزاسیون و آناتومی گشت‌وگذار کن.</p>
+  <div id="features"><div>🕹️ <b>کنترل لمسی</b>آنالوگ و چرخش دوربین</div><div>🏥 <b>محیط آزمایشگاهی</b>میزها و تجهیزات سه‌بعدی</div><div>🔬 <b>تعامل</b>بررسی و جابه‌جایی نمونه‌ها</div><div>🎧 <b>صدای فضاساز</b>موسیقی و صدای هر بخش</div><div>🫀 <b>آناتومی</b>مدل آموزشی بدن</div><div>💡 <b>نورپردازی</b>چراغ‌ها و سایه‌های پویا</div></div>
+  <div id="startActions"><button id="enterBtn" type="button">ورود به آزمایشگاه و فعال‌سازی صدا</button><button id="previewAudioBtn" type="button">♫ پیش‌نمایش موزیک</button></div>
+  <p id="startNote">برای تجربه‌ی بهتر، گوشی را افقی نگه دار. فعال‌شدن صدا به اولین لمس نیاز دارد. این پروژه یک محیط آموزشی نمایشی است و جایگزین تجهیزات یا آموزش عملی پزشکی نیست.</p>
+</div></div>
+<div id="pauseScreen" hidden><div id="pauseCard" class="glass"><h2>بازی متوقف شد</h2><p>آزمایشگاه منتظر بازگشت توست.</p><div id="pauseActions"><button id="resumeBtn" type="button">ادامه بازی</button><button id="pauseMusicBtn" type="button">تغییر وضعیت موزیک</button></div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <script>
 (()=>{
 'use strict';
 const $=id=>document.getElementById(id);
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x091827);scene.fog=new THREE.FogExp2(0x091827,.008);
-const camera=new THREE.PerspectiveCamera(74,innerWidth/innerHeight,.1,700);camera.position.set(0,1.7,17);
-const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;$('game').appendChild(renderer.domElement);
-const hemi=new THREE.HemisphereLight(0xc6f2ff,0x182334,2.0);scene.add(hemi);
-const key=new THREE.DirectionalLight(0xfff2dc,2.3);key.position.set(-20,35,20);key.castShadow=true;key.shadow.mapSize.set(2048,2048);scene.add(key);
-const point=new THREE.PointLight(0x38cfff,35,32);point.position.set(0,5,0);scene.add(point);
-const mats={floor:new THREE.MeshStandardMaterial({color:0x263b4a,roughness:.75}),wall:new THREE.MeshStandardMaterial({color:0x1a3547,roughness:.8}),white:new THREE.MeshStandardMaterial({color:0xd9e8e9,roughness:.42}),metal:new THREE.MeshStandardMaterial({color:0x9eb6c3,metalness:.8,roughness:.25}),glass:new THREE.MeshPhysicalMaterial({color:0x8deaff,transparent:true,opacity:.25,roughness:.08,metalness:.05}),blue:new THREE.MeshStandardMaterial({color:0x167fba,metalness:.35,roughness:.35}),red:new THREE.MeshStandardMaterial({color:0xc94c62,roughness:.5}),green:new THREE.MeshStandardMaterial({color:0x35b88b,roughness:.5}),dark:new THREE.MeshStandardMaterial({color:0x101c28,roughness:.6}),gold:new THREE.MeshStandardMaterial({color:0xe7b94e,metalness:.55,roughness:.3})};
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(180,140),mats.floor);floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
-const grid=new THREE.GridHelper(180,90,0x3a7890,0x294656);grid.position.y=.012;scene.add(grid);
-function box(parent,x,y,z,w,h,d,mat,cast=true){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=true;parent.add(m);return m}
-function cyl(parent,x,y,z,r1,r2,h,mat,seg=20){const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,seg),mat);m.position.set(x,y,z);m.castShadow=true;parent.add(m);return m}
-function sphere(parent,x,y,z,r,mat,sx=1,sy=1,sz=1){const m=new THREE.Mesh(new THREE.SphereGeometry(r,18,14),mat);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=true;parent.add(m);return m}
-function label(text,x,y,z,color='#a9efff',size=48){const c=document.createElement('canvas');c.width=1024;c.height=160;const ctx=c.getContext('2d');ctx.fillStyle='rgba(3,15,27,.8)';ctx.fillRect(0,0,1024,160);ctx.strokeStyle=color;ctx.lineWidth=5;ctx.strokeRect(5,5,1014,150);ctx.font='bold '+size+'px Vazirmatn, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=color;ctx.fillText(text,512,82);const tex=new THREE.CanvasTexture(c);const mesh=new THREE.Mesh(new THREE.PlaneGeometry(8,1.25),new THREE.MeshBasicMaterial({map:tex,transparent:true,side:THREE.DoubleSide}));mesh.position.set(x,y,z);scene.add(mesh);return mesh}
-function room(x,z,w,d,name,color=0x214b60){box(scene,x,3.7,z,w,.35,d,new THREE.MeshStandardMaterial({color:0x294b5b}));box(scene,x,1.8,z-d/2,w,3.6,.35,mats.wall);box(scene,x-w/2,1.8,z,w*.02,3.6,d,new THREE.MeshStandardMaterial({color}));box(scene,x+w/2,1.8,z,w*.02,3.6,d,new THREE.MeshStandardMaterial({color}));label(name,x,3.1,z-d/2+.22,'#8cecff',43)}
-// perimeter + connected lab wings
-room(0,0,32,30,'آزمایشگاه مرکزی');room(-38,0,34,30,'بخش زیست‌شناسی');room(38,0,34,30,'بخش شیمی و فرمول‌ها');room(0,-38,32,30,'مرکز آناتومی');room(0,38,32,30,'بخش میکروسکوپی');
-box(scene,0,3.7,0,112,.3,112,new THREE.MeshStandardMaterial({color:0x294b5b,side:THREE.DoubleSide}));
-for(let x=-48;x<=48;x+=16)for(let z=-48;z<=48;z+=16){if(Math.abs(x)<16&&Math.abs(z)<16)continue;const lamp=new THREE.PointLight(0x70dfff,7,17);lamp.position.set(x,3.35,z);scene.add(lamp);box(scene,x,3.48,z,3,.12,.65,new THREE.MeshBasicMaterial({color:0x8cecff}))}
-const interactables=[];
-function register(obj,name,desc,type='item',sound=440){obj.userData={name,desc,type,sound,interactable:true};interactables.push(obj);return obj}
-function cabinet(x,z){box(scene,x,1.2,z,3.3,2.4,1.2,mats.white);for(let i=0;i<3;i++){box(scene,x,0.45+i*.72,z-.63,3.15,.06,.05,mats.metal);for(let j=-1;j<=1;j++)box(scene,x+j*.9,0.45+i*.72,z-.7,.09,.12,.12,mats.gold)}}
-for(let i=0;i<7;i++){cabinet(-50+i*3.4,-9);cabinet(28+i*3.4,-9)}
-// central work benches
-for(const [x,z] of [[-7,2],[7,2],[-7,-8],[7,-8],[-45,0],[-30,0],[30,0],[45,0],[-7,42],[7,42]]){
-box(scene,x,.95,z,7,.22,2.5,mats.white);for(const dx of [-2.8,2.8])for(const dz of [-.8,.8])box(scene,x+dx,.45,z+dz,.18,.9,.18,mats.metal);
-const beaker=cyl(scene,x-1.6,1.48,z,.28,.22,.7,mats.glass,24);register(beaker,'بشر شیشه‌ای','ظرف آزمایشگاهی برای نگهداری و مخلوط‌کردن کنترل‌شده مایعات. حجم و درجه‌بندی در نسخه آموزشی بعدی اضافه می‌شود.','item',620);
-const vial=cyl(scene,x-.5,1.38,z,.13,.13,.5,mats.green,18);register(vial,'لوله نمونه','لوله نمونه برای نگهداری مقدار کمی مایع یا نمونه آزمایشگاهی.','item',720);
-const flask=sphere(scene,x+1,1.43,z,.28,mats.glass,.8,1.1,.8);register(flask,'ارلن آزمایشگاهی','ارلن برای مخلوط‌کردن محلول‌ها؛ در آزمایش واقعی از عینک و دستکش و دستور کار ایمن استفاده کنید.','item',540);
-const petri=cyl(scene,x+2.2,1.32,z,.36,.36,.12,mats.glass,28);register(petri,'پلیت کشت','ظرف پتری برای مشاهده و کشت نمونه‌های آموزشی؛ این نسخه شبیه‌سازی است.','item',800);
-}
-// microscope stations
-function microscope(x,z){const g=new THREE.Group();g.position.set(x,1.2,z);cyl(g,0,.12,0,.65,.65,.18,mats.dark);box(g,0,.45,0,.22,.6,.22,mats.metal);const arm=cyl(g,.1,.9,0,.12,.12,1.05,mats.metal);arm.rotation.z=-.35;box(g,.38,1.38,0,.8,.18,.24,mats.dark);cyl(g,.72,1.57,0,.13,.13,.45,mats.metal);box(g,0,.35,.45,.8,.12,.7,mats.blue);const lens=cyl(g,0,.55,.42,.13,.13,.2,mats.gold);scene.add(g);register(g,'میکروسکوپ نوری','برای بزرگ‌نمایی نمونه‌های بسیار کوچک استفاده می‌شود. نمونه را روی صفحه قرار دهید و از عدسی چشمی مشاهده کنید. در این نسخه با تعامل، پنجره مشاهده آموزشی باز می‌شود.','microscope',330);return g}
-microscope(-2,40);microscope(5,40);microscope(-45,-5);
-// chemistry glassware shelves and formula wall
-for(let i=0;i<5;i++){box(scene,35+i*2,2.2,-11,1.5,.12,1,mats.metal);for(let j=0;j<3;j++){const b=cyl(scene,34.5+i*2,2.55+j*.0,-11,.17,.17,.58,[mats.red,mats.green,mats.blue,mats.gold,mats.glass][i],16);register(b,['محلول قرمز','محلول سبز','محلول آبی','نمونه زرد','محلول شفاف'][i],'نمونه نمایشی رنگی؛ برای آموزش شناسایی محلول‌ها.','item',400+i*80)}}
-const board=box(scene,38,2.1,10,12,4,.18,new THREE.MeshStandardMaterial({color:0x123c3c,roughness:.9}));label('فرمول‌های دبیرستان',38,3.2,9.88,'#b9ffb2',54);
-const formulas=['فیزیک:  v = Δx / Δt','فیزیک:  F = m × a','شیمی:  n = m / M','شیمی:  C = n / V','ریاضی:  a² + b² = c²'];
-formulas.forEach((f,i)=>{const c=document.createElement('canvas');c.width=1024;c.height=120;const ctx=c.getContext('2d');ctx.font='bold 48px Vazirmatn';ctx.fillStyle='#e7ffe8';ctx.textAlign='center';ctx.fillText(f,512,78);const t=new THREE.CanvasTexture(c);const p=new THREE.Mesh(new THREE.PlaneGeometry(9,.85),new THREE.MeshBasicMaterial({map:t,transparent:true}));p.position.set(38,2.7-i*.67,9.77);scene.add(p)});
-register(board,'تابلوی فرمول‌های دبیرستان','فرمول‌های پایه فیزیک، شیمی و ریاضی روی تابلو قرار دارند. نسخه‌های بعدی می‌توانند حل مرحله‌ای و تمرین تعاملی داشته باشند.','board',250);
-// anatomy mannequin, stylized educational model
-const body=new THREE.Group();body.position.set(0,0,-38);scene.add(body);
-const skin=new THREE.MeshStandardMaterial({color:0xd99b83,roughness:.72}),organ=new THREE.MeshStandardMaterial({color:0xb83d52,roughness:.45}),vein=new THREE.MeshStandardMaterial({color:0x277bd1,roughness:.4}),bone=new THREE.MeshStandardMaterial({color:0xf1e3c5,roughness:.6});
-sphere(body,0,2.65,0,.55,skin,.8,1.35,.55);cyl(body,0,1.55,0,.38,.48,1.1,skin,24);sphere(body,0,1.15,0,.62,skin,1,.8,.5);sphere(body,0,.62,0,.5,skin,1.3,.65,.65);
-for(const s of [-1,1]){cyl(body,s*.72,1.7,0,.19,.15,1.5,skin,16).rotation.z=s*-.15;cyl(body,s*.78,.72,0,.14,.12,.65,skin,16);cyl(body,s*.3,-.2,0,.22,.16,1.1,skin,16);cyl(body,s*.32,-1.0,0,.15,.12,.9,skin,16);sphere(body,s*.32,-1.48,.08,.23,skin,1.5,.45,2)}
-// transparent cutaway torso + organs and vessels
-const cut=new THREE.MeshStandardMaterial({color:0x77d8ec,transparent:true,opacity:.23,roughness:.25,side:THREE.DoubleSide});
-const torso=sphere(body,0,1.55,.22,.56,cut,1,1.35,.7);register(torso,'قفسه سینه (نمای آموزشی)','قفسه سینه از دنده‌ها، جناغ و مهره‌های پشتی تشکیل شده و از اندام‌های مهمی مانند قلب و شش‌ها محافظت می‌کند.','anatomy',180);
-sphere(body,-.2,1.95,.45,.23,organ,1,1.2,.8);sphere(body,.2,1.95,.45,.23,organ,1,1.2,.8);sphere(body,0,1.52,.53,.19,new THREE.MeshStandardMaterial({color:0xc72d42}),1.1,.9,.8);
-const aorta=cyl(body,0,1.45,.62,.055,.045,.9,vein,12);aorta.rotation.z=.1;
-for(let s of [-1,1]){const branch=cyl(body,s*.18,1.85,.63,.035,.025,.6,vein,10);branch.rotation.z=s*.55}
-sphere(body,-.18,1.1,.43,.23,new THREE.MeshStandardMaterial({color:0x8c4d32}),1.3,.7,.7);sphere(body,.2,1.08,.43,.24,new THREE.MeshStandardMaterial({color:0x9d5a36}),1.2,.7,.7);
-const brain=sphere(body,0,3.02,.03,.32,new THREE.MeshStandardMaterial({color:0xe9a0ae}),1,.8,1);register(brain,'مغز','مغز بخشی از دستگاه عصبی مرکزی است و در پردازش اطلاعات، حرکت، حافظه و تنظیم بسیاری از عملکردهای بدن نقش دارد.','anatomy',210);
-register(body,'مدل سه‌بعدی بدن انسان','مدل آموزشی ساده‌شده برای آشنایی مقدماتی با جایگاه اندام‌ها. برای بررسی هر بخش به آن نزدیک شوید و کلیک کنید.','anatomy',150);
-// anatomy labels
-label('مدل آناتومی انسان',0,4.1,-39,'#ffd5dc',45);
-// doors / signs / extra props
-for(const [x,z,n] of [[-16,0,'زیست‌شناسی'],[16,0,'شیمی'],[0,-16,'آناتومی'],[0,16,'میکروسکوپی']]){box(scene,x,1.5,z,1.2,3,.3,mats.blue);label(n,x,2.8,z,'#d3f8ff',35)}
-// sample drawers and extra equipment
-for(let i=0;i<12;i++){const x=-52+(i%6)*4.1,z=12+Math.floor(i/6)*4;box(scene,x,1,z,2.6,2,.9,mats.white);for(let j=0;j<3;j++){box(scene,x,0.45+j*.55,z-.48,2.4,.04,.04,mats.metal);box(scene,x,0.45+j*.55,z-.56,.22,.08,.08,mats.gold)}}
-for(let i=0;i<10;i++){const x=24+(i%5)*4,z=18+Math.floor(i/5)*4;const m=box(scene,x,.7,z,1.4,1.4,1.4,[mats.blue,mats.green,mats.gold,mats.red][i%4]);register(m,'جعبه تجهیزات '+(i+1),'جعبه نگهداری ابزار و مواد آموزشی آزمایشگاه.','item',300+i*30)}
-// physics / controls
-const keys={};let yaw=0,pitch=0,locked=false,gameActive=false,held=null,near=null,musicOn=false,audio=null,osc=null;let joyX=0,joyY=0,touchLookId=null,lastLookX=0,lastLookY=0;
-camera.rotation.order='YXZ';
-function sound(freq=440,duration=.12){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.08,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+duration)}catch(e){}}
-function music(){audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(musicOn){if(osc){osc.stop();osc=null}musicOn=false;$('music').textContent='♫ موسیقی: خاموش';return}musicOn=true;$('music').textContent='♫ موسیقی: روشن';osc=audio.createOscillator();const gain=audio.createGain();osc.type='sine';osc.frequency.value=110;gain.gain.value=.018;osc.connect(gain);gain.connect(audio.destination);osc.start()}
-$('music').onclick=music;
-$('enter').onclick=()=>{gameActive=true;$('start').style.display='none';sound(520,.18);if(innerWidth>900){renderer.domElement.requestPointerLock?.()}else{document.documentElement.requestFullscreen?.().catch(()=>{});screen.orientation?.lock?.('landscape').catch(()=>{});}};
-document.addEventListener('pointerlockchange',()=>{locked=document.pointerLockElement===renderer.domElement});
-document.addEventListener('mousemove',e=>{if(!locked)return;yaw-=e.movementX*.0022;pitch-=e.movementY*.0022;pitch=Math.max(-1.35,Math.min(1.35,pitch));camera.rotation.set(pitch,yaw,0)});
-const lookZone=$('lookZone');lookZone.addEventListener('pointerdown',e=>{if(!gameActive)return;touchLookId=e.pointerId;lastLookX=e.clientX;lastLookY=e.clientY;lookZone.setPointerCapture(e.pointerId)});lookZone.addEventListener('pointermove',e=>{if(e.pointerId!==touchLookId)return;const dx=e.clientX-lastLookX,dy=e.clientY-lastLookY;lastLookX=e.clientX;lastLookY=e.clientY;yaw-=dx*.006;pitch=Math.max(-1.3,Math.min(1.3,pitch-dy*.005));camera.rotation.set(pitch,yaw,0)});const endLook=e=>{if(e.pointerId===touchLookId)touchLookId=null};lookZone.addEventListener('pointerup',endLook);lookZone.addEventListener('pointercancel',endLook);
-document.addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='KeyE')interact();if(e.code==='KeyQ')dropOrTake()});
-document.addEventListener('keyup',e=>keys[e.code]=false);
-renderer.domElement.addEventListener('click',()=>{if(!gameActive)return;if(innerWidth>900){if(!locked)renderer.domElement.requestPointerLock?.();else interact()}});
-$('touchUse').addEventListener('click',interact);$('touchTake').addEventListener('click',dropOrTake);
-const ray=new THREE.Raycaster();const dir=new THREE.Vector3();
-function findNear(){camera.getWorldDirection(dir);ray.set(camera.position,dir);const hits=ray.intersectObjects(interactables,true);let found=null;for(const h of hits){let o=h.object;while(o&&!o.userData.interactable)o=o.parent;if(o&&h.distance<5){found=o;break}}return found}
-function showInfo(o){$('infoTitle').textContent=o.userData.name;$('infoText').textContent=o.userData.desc;$('info').style.display='block';$('takeBtn').style.display=['item'].includes(o.userData.type)?'inline-block':'none';$('takeBtn').onclick=()=>{held=o;scene.attach(o);o.position.set(0,-.25,-1.15);o.rotation.set(0,0,0);o.scale.setScalar(.55);$('held').textContent=o.userData.name;$('inventory').style.display='block';$('info').style.display='none';sound(o.userData.sound,.16);toast('وسیله برداشته شد؛ برای گذاشتن Q را بزن.')}}
-function interact(){if(!near)return;const o=near;sound(o.userData.sound||440);if(o.userData.type==='microscope'){showInfo(o);$('infoText').textContent+='\\n\\nنمای میکروسکوپی: نمونه فرضی شامل سلول‌های آموزشی را در ذهن تصور کنید. بزرگ‌نمایی و اسلایدهای واقعی در به‌روزرسانی بعدی افزوده می‌شوند.';return}showInfo(o)}
-function dropOrTake(){if(held){const obj=held;scene.attach(obj);obj.position.copy(camera.position).add(camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(2));obj.position.y=Math.max(.3,obj.position.y);obj.scale.setScalar(1);held=null;$('held').textContent='خالی';sound(190,.2);toast('وسیله روی زمین قرار گرفت.');return}if(near&&near.userData.type==='item')showInfo(near)}
-function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
-$('closeInfo').onclick=()=>$('info').style.display='none';
-const clock=new THREE.Clock();
-function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);near=findNear();$('prompt').style.opacity=near?'1':'0';$('prompt').textContent=near?'E / کلیک — '+near.userData.name:'';if(gameActive&&(locked||innerWidth<=900)){const speed=(keys.ShiftLeft?9:5)*dt;const forward=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw));const right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw));const mx=joyX,my=joyY;if(keys.KeyW||my<-.18)camera.position.addScaledVector(forward,speed*Math.max(keys.KeyW?1:0,-my));if(keys.KeyS||my>.18)camera.position.addScaledVector(forward,-speed*Math.max(keys.KeyS?1:0,my));if(keys.KeyA||mx<-.18)camera.position.addScaledVector(right,-speed*Math.max(keys.KeyA?1:0,-mx));if(keys.KeyD||mx>.18)camera.position.addScaledVector(right,speed*Math.max(keys.KeyD?1:0,mx));camera.position.x=THREE.MathUtils.clamp(camera.position.x,-58,58);camera.position.z=THREE.MathUtils.clamp(camera.position.z,-58,58);camera.position.y=1.7}
-if(held){const p=new THREE.Vector3(0,-.25,-1.1).applyQuaternion(camera.quaternion).add(camera.position);held.position.lerp(p,.35);held.quaternion.copy(camera.quaternion)}
-renderer.render(scene,camera)}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const isMobile=()=>matchMedia('(max-width: 950px)').matches;
+if(!window.THREE){$('start').innerHTML='<div class="glass" style="padding:24px;max-width:520px;text-align:center"><h2 style="color:#79e9ff">موتور سه‌بعدی بارگذاری نشد</h2><p>برای اجرای بازی باید اینترنت روشن باشد تا کتابخانه‌ی Three.js بارگذاری شود. صفحه را تازه‌سازی کن.</p></div>';return;}
+let scene,camera,renderer,clock,playerLight;
+try{
+ scene=new THREE.Scene();scene.background=new THREE.Color(0x071522);scene.fog=new THREE.Fog(0x071522,42,105);
+ camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,180);camera.position.set(0,1.72,21);camera.rotation.order='YXZ';
+ renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,isMobile()?1.45:1.85));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;$('game').appendChild(renderer.domElement);
+}catch(err){$('start').innerHTML='<div class="glass" style="padding:24px;max-width:520px;text-align:center"><h2>امکان ساخت صحنه‌ی سه‌بعدی وجود ندارد</h2><p>مرورگر یا دستگاه نتوانست WebGL را فعال کند. با Chrome به‌روز و شتاب‌دهی گرافیکی فعال دوباره امتحان کن.</p></div>';return;}
+const hemi=new THREE.HemisphereLight(0xc8eaff,0x26313a,1.6);scene.add(hemi);
+const keyLight=new THREE.DirectionalLight(0xffe7c6,2.25);keyLight.position.set(-23,32,18);keyLight.castShadow=true;keyLight.shadow.mapSize.set(2048,2048);keyLight.shadow.camera.left=-38;keyLight.shadow.camera.right=38;keyLight.shadow.camera.top=38;keyLight.shadow.camera.bottom=-38;keyLight.shadow.bias=-.00025;scene.add(keyLight);
+const fillLight=new THREE.DirectionalLight(0x5acbff,.7);fillLight.position.set(24,16,-20);scene.add(fillLight);
+playerLight=new THREE.SpotLight(0xbdefff,0,22,Math.PI/7,.45,1.5);camera.add(playerLight);playerLight.position.set(0,0,0);const spotTarget=new THREE.Object3D();spotTarget.position.set(0,0,-1);camera.add(spotTarget);playerLight.target=spotTarget;scene.add(camera);
+const mat=(color,roughness=.65,metalness=0,extra={})=>new THREE.MeshStandardMaterial({color,roughness,metalness,...extra});
+const M={floor:mat(0x354550,.88),tile:mat(0x42535b,.65),wall:mat(0xdce5e4,.82),wallBlue:mat(0x9bb8c1,.78),ceiling:mat(0x263845,.9),steel:mat(0x9cabb3,.3,.82),white:mat(0xf0f2eb,.38),cabinet:mat(0xe7ece8,.44),blue:mat(0x187da4,.34,.26),navy:mat(0x183246,.44),glass:new THREE.MeshPhysicalMaterial({color:0x9feaff,transparent:true,opacity:.28,roughness:.08,metalness:.05,side:THREE.DoubleSide}),glassDark:new THREE.MeshPhysicalMaterial({color:0x284e60,transparent:true,opacity:.48,roughness:.14}),red:mat(0xb94b55,.45),green:mat(0x3e9c78,.42),yellow:mat(0xe3b74f,.4,.15),black:mat(0x101820,.42),skin:mat(0xc58e75,.68),organ:mat(0xb9394a,.48),lung:mat(0xc66b7d,.5),bone:mat(0xe5d7b9,.7),purple:mat(0x8068a8,.4)};
+const interactables=[],animated=[],colliders=[];
+function mesh(parent,geo,material,x=0,y=0,z=0,cast=true){const o=new THREE.Mesh(geo,material);o.position.set(x,y,z);o.castShadow=cast;o.receiveShadow=true;parent.add(o);return o;}
+function box(parent,x,y,z,w,h,d,material,cast=true){return mesh(parent,new THREE.BoxGeometry(w,h,d),material,x,y,z,cast);}
+function cyl(parent,x,y,z,rt,rb,h,material,segments=18){return mesh(parent,new THREE.CylinderGeometry(rt,rb,h,segments),material,x,y,z);}
+function sphere(parent,x,y,z,sx,sy,sz,material,segments=18){const o=mesh(parent,new THREE.SphereGeometry(1,segments,Math.max(10,Math.floor(segments*.7))),material,x,y,z);o.scale.set(sx,sy,sz);return o;}
+function addLabel(text,x,y,z,color='#123344',width=512,height=128){const c=document.createElement('canvas');c.width=width;c.height=height;const ctx=c.getContext('2d');ctx.clearRect(0,0,width,height);ctx.fillStyle='rgba(245,250,248,.94)';ctx.fillRect(0,0,width,height);ctx.strokeStyle='#70d4e6';ctx.lineWidth=8;ctx.strokeRect(4,4,width-8,height-8);ctx.fillStyle=color;ctx.font='bold 46px Vazirmatn, Tahoma';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,width/2,height/2);const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;const sign=mesh(scene,new THREE.PlaneGeometry(4.3,1.05),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide}),x,y,z,false);return sign;}
+function tag(o,name,description,category,soundType='beep',portable=false){o.userData={interactable:true,name,description,category,soundType,portable};interactables.push(o);return o;}
+function group(parent=scene,x=0,y=0,z=0){const g=new THREE.Group();g.position.set(x,y,z);parent.add(g);return g;}
+function areaLamp(x,z,color=0x9deeff){const p=new THREE.PointLight(color,38,15,2);p.position.set(x,5.3,z);scene.add(p);const shade=mesh(scene,new THREE.CylinderGeometry(.45,.55,.16,24),mat(0xf4f5ed,.4),x,6.75,z,false);const lens=mesh(scene,new THREE.CylinderGeometry(.39,.39,.035,24),new THREE.MeshBasicMaterial({color}),x,6.65,z,false);return p;}
+// --- Large, continuous hospital laboratory shell ---
+box(scene,0,-.22,0,66,.44,58,M.floor,false);
+for(let x=-31;x<=31;x+=4)for(let z=-27;z<=27;z+=4){const tile=box(scene,x,.006,z,3.96,.012,3.96,((Math.round(x/4)+Math.round(z/4))%2===0?M.tile:M.floor),false);}
+// perimeter walls and ceiling beams
+box(scene,0,4.1,-29,66,8.2,.55,M.wall);box(scene,-19.75,4.1,29,26.5,8.2,.55,M.wall);box(scene,19.75,4.1,29,26.5,8.2,.55,M.wall);box(scene,0,7.72,29,6.5,1.0,.55,M.wall);box(scene,-33,4.1,0,.55,8.2,58,M.wall);box(scene,33,4.1,0,.55,8.2,58,M.wall);
+box(scene,0,8.25,0,66,.35,58,M.ceiling,false);
+for(let x=-28;x<=28;x+=7){box(scene,x,7.95,0,.12,.16,57,M.steel,false);}
+// windows on far wall
+for(let x=-23;x<=23;x+=11){box(scene,x,4.65,-28.68,6.5,3.3,.08,M.glass,false);box(scene,x,4.65,-28.60,.10,3.5,.12,M.steel,false);box(scene,x,4.65,-28.60,6.7,.1,.12,M.steel,false);}
+// double entry doors
+box(scene,-3,1.45,28.68,2.7,2.9,.12,M.blue);box(scene,3,1.45,28.68,2.7,2.9,.12,M.blue);box(scene,0,1.45,28.55,.12,3.05,.25,M.steel);
+for(let x=-24;x<=24;x+=12){box(scene,x,7.85,0,5.4,.13,1.1,M.white,false);const l=new THREE.PointLight(0xd5f6ff,22,13,2);l.position.set(x,7.2,0);scene.add(l);}
+// floor lane and safety strips
+box(scene,0,.025,0,4,.025,53,mat(0x6c8990,.65),false);for(let z=-25;z<27;z+=2.4){box(scene,-2.3,.03,z,.08,.02,1.1,M.yellow,false);box(scene,2.3,.03,z,.08,.02,1.1,M.yellow,false);}
+areaLamp(-20,-14,0x7deaff);areaLamp(0,-14,0xffdf9b);areaLamp(20,-14,0x8cf6df);areaLamp(-20,12,0x9ce5ff);areaLamp(0,12,0xffb4bd);areaLamp(20,12,0xbba8ff);
+// Cabinet row helper
+function cabinet(x,z,w=4){const g=group(scene,x,0,z);box(g,0,1.25,0,w,2.5,1.2,M.cabinet);box(g,0,2.52,-.02,w+.05,.08,1.28,M.steel);for(let i=0;i<Math.max(2,Math.floor(w/1.1));i++){const xx=-w/2+(i+.5)*w/Math.max(2,Math.floor(w/1.1));box(g,xx,1.25,-.62,.025,2.25,.045,M.steel,false);sphere(g,xx+.28,1.25,-.68,.055,.055,.055,M.steel,12);}return g;}
+function bench(x,z,w=9){const g=group(scene,x,0,z);box(g,0,1.08,0,w,.22,1.65,M.white);box(g,0,.95,0,w+.05,.08,1.7,M.steel);for(const side of [-1,1])for(const xx of [-w/2+.35,w/2-.35])box(g,xx,.48,side*.58,.16,.95,.16,M.steel);box(g,1,1.25,-.77,1.1,.15,.08,M.blue);return g;}
+function equipmentBase(g,x,z,w=1.3,d=1){box(g,x,.1,z,w,.2,d,M.steel);}
+function bottle(parent,x,y,z,color=M.glass,scale=1){const g=group(parent,x,y,z);cyl(g,0,.34*scale,0,.16*scale,.18*scale,.55*scale,color,20);cyl(g,0,.66*scale,0,.07*scale,.07*scale,.18*scale,M.white,16);cyl(g,0,.77*scale,0,.08*scale,.08*scale,.06*scale,M.blue,16);return g;}
+function tubeRack(x,z){const g=group(scene,x,1.2,z);box(g,0,0,0,2.3,.18,.68,M.blue);box(g,0,.34,0,2.3,.09,.68,M.steel);for(let i=0;i<7;i++){const xx=-.9+i*.3;cyl(g,xx,.68,0,.105,.105,.62,M.glass,16);cyl(g,xx,.98,0,.11,.11,.08,[M.red,M.green,M.yellow][i%3],16);}tag(g,'رک لوله‌های آزمایش','لوله‌های آزمایش برای نگهداری، مخلوط‌کردن و مشاهده‌ی نمونه‌های کوچک استفاده می‌شوند. رنگ محلول‌ها در این محیط صرفاً نمایشی است.','زیست‌شناسی','glass',false);return g;}
+// --- Biology station ---
+const bioBench=bench(-21,-13,10);cabinet(-21,-17,9);addLabel('آزمایشگاه زیست‌شناسی',-21,6.5,-19,'#15536b');
+const bioRack=tubeRack(-23,-13);const petri=group(scene,-18,1.25,-13);cyl(petri,0,.05,0,.53,.53,.1,M.glass,32);cyl(petri,0,.105,0,.48,.48,.035,new THREE.MeshStandardMaterial({color:0xd8edc2,roughness:.4}),32);tag(petri,'پتری‌دیش','ظرف کم‌عمق و دردار برای کشت و مشاهده‌ی نمونه‌های زیستی روی محیط کشت به‌کار می‌رود.','زیست‌شناسی','glass',true);
+const vial=bottle(scene,-19.8,1.22,-13,M.glass,.92);tag(vial,'ویال نمونه','ویال شیشه‌ای کوچک برای نگهداری نمونه‌های آزمایشگاهی. در کار واقعی، برچسب‌گذاری و رعایت دستورالعمل ایمنی ضروری است.','زیست‌شناسی','glass',true);
+const pipette=group(scene,-16.4,1.35,-13);cyl(pipette,0,.25,0,.06,.1,.75,M.white,16);cyl(pipette,0,.67,0,.11,.11,.14,M.blue,16);cyl(pipette,0,-.16,0,.025,.025,.12,M.steel,12);pipette.rotation.z=.12;tag(pipette,'میکروپیپت','میکروپیپت برای برداشتن و انتقال حجم‌های بسیار کم مایع، معمولاً در بازه‌ی میکرولیتر، استفاده می‌شود.','زیست‌شناسی','click',true);
+// --- Chemistry station ---
+bench(0,-13,11);cabinet(0,-17,10);addLabel('آزمایشگاه شیمی',0,6.5,-19,'#775525');
+const flask=group(scene,-3,1.22,-13);cyl(flask,0,.15,0,.28,.32,.3,M.glass,24);sphere(flask,0,.52,0,.43,.43,.43,M.glass,24);cyl(flask,0,.95,0,.13,.13,.42,M.glass,20);cyl(flask,0,1.19,0,.14,.14,.08,M.steel,16);cyl(flask,0,.4,.02,.32,.05,.05,M.green,20);tag(flask,'ارلن‌مایر','ارلن به‌دلیل گردن باریک و بدنه‌ی مخروطی برای مخلوط‌کردن محلول‌ها و انجام برخی واکنش‌ها کاربرد دارد.','شیمی','glass',true);
+const beaker=group(scene,0,1.22,-13);cyl(beaker,0,.38,0,.36,.4,.72,M.glass,24);cyl(beaker,0,.07,0,.34,.34,.03,M.blue,24);box(beaker,.0,.78,.0,.18,.06,.06,M.steel,false);tag(beaker,'بشر آزمایشگاهی','بشر برای نگهداری، ترکیب و گرم‌کردن محلول‌ها به‌کار می‌رود؛ درجه‌بندی آن برای اندازه‌گیری دقیق حجم کافی نیست.','شیمی','liquid',true);
+const burner=group(scene,3,1.22,-13);cyl(burner,0,.14,0,.33,.35,.28,M.steel,20);cyl(burner,0,.45,0,.13,.11,.36,M.blue,18);const flame=sphere(burner,0,.77,0,.13,.32,.13,new THREE.MeshBasicMaterial({color:0x49c9ff}),16);tag(burner,'چراغ بونزن','چراغ بونزن برای ایجاد شعله‌ی قابل‌کنترل در برخی فرایندهای آزمایشگاهی استفاده می‌شود. این نمونه صرفاً نمایشی است؛ شعله‌ی واقعی در صفحه وجود ندارد.','شیمی','ignite',false);animated.push(t=>{flame.scale.y=.27+Math.sin(t*8)*.07;});
+const balance=group(scene,5,1.22,-13);box(balance,0,.18,0,1.3,.35,.8,M.white);box(balance,0,.42,0,.75,.13,.48,M.black);box(balance,0,.51,0,.58,.04,.34,M.green);tag(balance,'ترازوی دیجیتال','ترازوی آزمایشگاهی برای اندازه‌گیری جرم استفاده می‌شود. برای نتیجه‌ی قابل اعتماد باید کالیبراسیون و ظرفیت دستگاه رعایت شود.','شیمی','beep',false);
+// --- Microscopy station ---
+bench(21,-13,10);cabinet(21,-17,9);addLabel('بخش میکروسکوپی',21,6.5,-19,'#216c5b');
+const microscope=group(scene,18,1.22,-13);box(microscope,0,.16,0,1.35,.22,.9,M.black);const arm=cyl(microscope,0,.75,-.15,.09,.12,1.0,M.steel,20);arm.rotation.z=-.25;cyl(microscope,-.2,1.16,-.25,.13,.13,.5,M.black,20).rotation.z=.85;box(microscope,.1,.43,.1,.75,.08,.58,M.blue);for(let i=0;i<3;i++){const lens=cyl(microscope,.28+i*.13,.88,.13,.06,.06,.35,[M.yellow,M.steel,M.blue][i],16);lens.rotation.x=.4;}const stage=box(microscope,0,.64,.12,.75,.06,.65,M.steel);tag(microscope,'میکروسکوپ نوری','میکروسکوپ نوری با عدسی‌های شیئی و چشمی، تصویر نمونه‌های کوچک را بزرگ‌نمایی می‌کند. برای وضوح بهتر، نور و فوکوس تنظیم می‌شوند.','میکروسکوپی','focus',false);
+const slide=group(scene,21.5,1.4,-13);box(slide,0,.03,0,1.05,.06,.38,M.glass);sphere(slide,0,.09,0,.13,.035,.13,M.purple,16);tag(slide,'لام میکروسکوپی','لام شیشه‌ای سطحی برای قرار دادن نمونه در زیر میکروسکوپ است؛ لامل نازک روی نمونه قرار می‌گیرد.','میکروسکوپی','glass',true);
+// screen monitor with synthetic microscopic cell image
+const monitor=group(scene,24,1.22,-13);box(monitor,0,.85,0,1.6,1.1,.16,M.black);const screenCanvas=document.createElement('canvas');screenCanvas.width=512;screenCanvas.height=320;const sx=screenCanvas.getContext('2d');sx.fillStyle='#071b29';sx.fillRect(0,0,512,320);for(let i=0;i<45;i++){const x=Math.random()*512,y=Math.random()*320,r=7+Math.random()*22;sx.beginPath();sx.fillStyle=`hsla(${170+Math.random()*90},65%,${45+Math.random()*20}%,.7)`;sx.arc(x,y,r,0,Math.PI*2);sx.fill();sx.strokeStyle='#d8fbff88';sx.stroke();}const tex=new THREE.CanvasTexture(screenCanvas);tex.colorSpace=THREE.SRGBColorSpace;mesh(monitor,new THREE.PlaneGeometry(1.42,.86),new THREE.MeshBasicMaterial({map:tex}),0,.86,.09,false);box(monitor,0,.25,0,.35,.12,.35,M.steel);tag(monitor,'نمایشگر تصاویر میکروسکوپی','نمایشگر، تصویر نمونه‌ی فرضی را نشان می‌دهد. تصویر روی صفحه یک طرح گرافیکی آموزشی است، نه نمونه‌ی تشخیصی واقعی.','میکروسکوپی','beep',false);
+// --- Sterilisation / equipment station ---
+bench(-21,12,10);cabinet(-21,16,9);addLabel('استریلیزاسیون و شست‌وشو',-21,6.5,18,'#15536b');
+const autoclave=group(scene,-23,0,12);box(autoclave,0,1.2,0,2.3,2.4,1.7,M.steel);cyl(autoclave,0,1.5,.9,.58,.58,.14,M.black,32);cyl(autoclave,0,1.5,.99,.49,.49,.04,M.glass,32);for(let i=0;i<3;i++){const led=sphere(autoclave,-.7+i*.22,2.1,.88,.055,.055,.035,[M.green,M.yellow,M.red][i],12);}tag(autoclave,'اتوکلاو','اتوکلاو با بخار اشباع و فشار کنترل‌شده برای استریل‌سازی بسیاری از ابزارهای مقاوم به حرارت استفاده می‌شود. این مدل عملکرد واقعی ندارد.','استریلیزاسیون','steam',false);
+const sink=group(scene,-18,1.1,12);box(sink,0,.15,0,2.2,.25,1.15,M.white);box(sink,0,.0,0,1.1,.04,.55,M.glass);cyl(sink,.5,.55,-.35,.045,.045,.8,M.steel,12);tag(sink,'سینک شست‌وشوی آزمایشگاه','محل شست‌وشوی دست و تجهیزات با رعایت دستورالعمل‌های ایمنی و تفکیک مواد آلوده.','استریلیزاسیون','water',false);
+const fridge=group(scene,-16,0,12);box(fridge,0,1.55,0,1.5,3.1,1.3,M.white);box(fridge,.25,1.55,-.67,.045,2.85,.05,M.steel);sphere(fridge,.53,1.55,-.72,.045,.1,.04,M.steel,12);tag(fridge,'یخچال نمونه‌ها','یخچال آزمایشگاهی برای نگهداری نمونه‌ها و معرف‌های سازگار با دمای پایین به‌کار می‌رود. هر ماده باید طبق برچسب و دستورالعمل خودش نگهداری شود.','استریلیزاسیون','door',false);
+// --- Anatomy demonstration ---
+bench(0,12,11);cabinet(0,16,10);addLabel('بخش آناتومی انسان',0,6.5,18,'#8a4357');
+const anatomy=group(scene,0,0,12);
+// stand
+box(anatomy,0,.3,0,2.7,.25,1.7,M.steel);box(anatomy,0,.12,0,2.9,.18,1.9,M.navy);cyl(anatomy,0,-.4,0,.13,.13,.9,M.steel,16);
+const body=group(anatomy,0,.6,0);
+sphere(body,0,3.5,0,.52,.62,.48,M.skin,24);sphere(body,0,2.55,0,.78,1.05,.42,M.skin,24);sphere(body,0,1.55,0,.67,.65,.42,M.skin,22);cyl(body,0,4.13,0,.16,.18,.35,M.skin,18);
+for(const s of [-1,1]){const armM=cyl(body,s*.95,2.55,0,.19,.15,1.65,M.skin,18);armM.rotation.z=s*.12;cyl(body,s*.34,.55,0,.22,.18,1.35,M.skin,18);}
+// transparent chest cut-away and organs
+const chest=new THREE.Mesh(new THREE.SphereGeometry(1,24,18),new THREE.MeshPhysicalMaterial({color:0x86e8fa,transparent:true,opacity:.17,roughness:.15,side:THREE.DoubleSide}));chest.position.set(0,2.64,.27);chest.scale.set(.68,.91,.22);body.add(chest);
+const lungL=sphere(body,-.27,2.82,.44,.25,.47,.17,M.lung,20),lungR=sphere(body,.27,2.82,.44,.25,.47,.17,M.lung,20);tag(lungL,'شش چپ','شش‌ها اندام‌های اصلی دستگاه تنفس هستند و تبادل اکسیژن و دی‌اکسیدکربن در آن‌ها انجام می‌شود.','آناتومی','breath',false);tag(lungR,'شش راست','شش‌ها اندام‌های اصلی دستگاه تنفس هستند و تبادل اکسیژن و دی‌اکسیدکربن در آن‌ها انجام می‌شود.','آناتومی','breath',false);
+const heart=sphere(body,0,2.58,.62,.2,.29,.18,M.organ,20);heart.rotation.z=-.18;tag(heart,'قلب','قلب یک اندام عضلانی است که خون را در گردش ریوی و سیستمیک پمپ می‌کند. مدل حاضر صرفاً برای نمایش جایگاه تقریبی اندام ساخته شده است.','آناتومی','heart',false);
+const brain=sphere(body,0,3.62,.05,.31,.23,.27,M.purple,20);tag(brain,'مغز','مغز بخش اصلی دستگاه عصبی مرکزی است و در پردازش اطلاعات، حافظه، حرکت و تنظیم عملکردهای بدن نقش دارد.','آناتومی','heartbeat',false);
+const liver=sphere(body,.06,2.05,.45,.35,.16,.19,new THREE.MeshStandardMaterial({color:0x75432e,roughness:.6}),20);tag(liver,'کبد','کبد در سوخت‌وساز، ذخیره مواد غذایی، ساخت برخی پروتئین‌ها و پردازش مواد نقش دارد.','آناتومی','heartbeat',false);
+tag(body,'مدل سه‌بعدی بدن انسان','مدل آموزشی ساده‌شده‌ی بدن انسان با نمایش تقریبی برخی اندام‌ها. برای دیدن هر اندام، نشانگر را روی آن قرار بده و دکمه‌ی تعامل را بزن.','آناتومی','heartbeat',false);
+// --- Additional lab props and safety elements ---
+function stool(x,z){const g=group(scene,x,0,z);cyl(g,0,.55,0,.36,.36,.14,M.blue,20);cyl(g,0,.25,0,.07,.08,.5,M.steel,16);cyl(g,0,.07,0,.36,.36,.1,M.steel,20);}
+for(const [x,z] of [[-25,-9],[-17,-9],[-5,-9],[5,-9],[17,-9],[25,-9],[-25,8],[-16,8],[16,8],[25,8]])stool(x,z);
+// wall safety/notice panels
+function wallPanel(x,z,text,color){const p=box(scene,x,2.25,z,3.2,1.65,.12,M.white,false);const canvas=document.createElement('canvas');canvas.width=512;canvas.height=256;const c=canvas.getContext('2d');c.fillStyle='#f0f4ef';c.fillRect(0,0,512,256);c.fillStyle=color;c.font='bold 38px Vazirmatn,Tahoma';c.textAlign='center';c.fillText(text,256,132);const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;mesh(scene,new THREE.PlaneGeometry(3.05,1.52),new THREE.MeshBasicMaterial({map:t}),x,2.25,z+.071,false);}
+wallPanel(-32,0,'ایمنی اول است','#a6333b');wallPanel(32,0,'تجهیزات حفاظت فردی','#245c7d');
+// Decorative overhead cable / air ducts
+for(const x of [-20,0,20]){cyl(scene,x,7.5,0,.12,.12,52,M.steel,14).rotation.x=Math.PI/2;for(const z of [-22,-12,0,12,22]){const v=box(scene,x,7.4,z,.45,.5,.55,M.blue,false);}}
+// raycast and player state
+const raycaster=new THREE.Raycaster();raycaster.far=7;const direction=new THREE.Vector3();let yaw=0,pitch=0,gameActive=false,paused=false,held=null,near=null;const keys=Object.create(null);let joyX=0,joyY=0,lookPointer=null,lastLookX=0,lastLookY=0;
+function getTarget(){camera.getWorldDirection(direction);raycaster.set(camera.position,direction);const hits=raycaster.intersectObjects(interactables,true);for(const hit of hits){let o=hit.object;while(o&& !o.userData.interactable)o=o.parent;if(o&&hit.distance<7)return o;}return null;}
+function toast(text){$('toast').textContent=text;$('toast').style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').style.display='none',2400);}
+function showDetails(o){if(!o)return;$('detailMeta').textContent='بخش: '+o.userData.category+'  •  فاصله: '+Math.round(camera.position.distanceTo(o.getWorldPosition(new THREE.Vector3()))*10)/10+' متر';$('detailTitle').textContent=o.userData.name;$('detailText').textContent=o.userData.description;$('takeBtn').style.display=o.userData.portable?'inline-block':'none';$('details').style.display='block';playFx(o.userData.soundType);}
+function interact(){if(!gameActive||paused)return;if(!near){toast('برای تعامل، نشانگر وسط صفحه را روی یک وسیله بگیر و نزدیک‌تر شو.');playFx('nope');return;}showDetails(near);}
+function grabOrDrop(){if(!gameActive||paused)return;if(held){const obj=held;scene.attach(obj);camera.getWorldDirection(direction);obj.position.copy(camera.position).addScaledVector(direction,1.8);obj.position.y=Math.max(.4,obj.position.y);obj.rotation.set(0,0,0);obj.scale.copy(obj.userData.originalScale||new THREE.Vector3(1,1,1));held=null;$('heldName').textContent='خالی';$('inventory').style.display='none';$('details').style.display='none';playFx('drop');toast('وسیله روی زمین قرار گرفت.');return;}if(near&&near.userData.portable){held=near;held.userData.originalScale=held.scale.clone();scene.attach(held);held.position.copy(camera.position).add(new THREE.Vector3(0,-.28,-1.15).applyQuaternion(camera.quaternion));held.scale.multiplyScalar(.72);$('heldName').textContent=held.userData.name;$('inventory').style.display='block';$('details').style.display='none';playFx(held.userData.soundType);toast('وسیله برداشته شد؛ با همین دکمه آن را رها کن.');}else if(near){showDetails(near);}else{toast('وسیله‌ی قابل برداشتن در مرکز دید نیست.');playFx('nope');}}
+$('takeBtn').addEventListener('click',()=>{if(near&&near.userData.portable){grabOrDrop();}else toast('این وسیله قابل جابه‌جایی نیست.');});
+$('closeDetails').addEventListener('click',()=>$('details').style.display='none');$('helpBtn').addEventListener('click',()=>$('helpPanel').style.display=$('helpPanel').style.display==='block'?'none':'block');$('closeHelp').addEventListener('click',()=>$('helpPanel').style.display='none');
+// --- Synthesized audio: original ambient score + unique equipment/area effects ---
+let audioCtx=null,masterGain=null,musicGain=null,sfxGain=null,ambGain=null,musicOn=false,soundOn=true,musicTimer=null,areaOsc1=null,areaOsc2=null,areaNow='ورودی آزمایشگاه';
+function ensureAudio(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;if(!audioCtx){audioCtx=new AC();masterGain=audioCtx.createGain();masterGain.gain.value=.8;masterGain.connect(audioCtx.destination);musicGain=audioCtx.createGain();musicGain.gain.value=.16;musicGain.connect(masterGain);sfxGain=audioCtx.createGain();sfxGain.gain.value=.55;sfxGain.connect(masterGain);ambGain=audioCtx.createGain();ambGain.gain.value=.032;ambGain.connect(masterGain);areaOsc1=audioCtx.createOscillator();areaOsc2=audioCtx.createOscillator();const f=audioCtx.createBiquadFilter();f.type='lowpass';f.frequency.value=280;areaOsc1.type='sine';areaOsc2.type='triangle';areaOsc1.frequency.value=54;areaOsc2.frequency.value=82;areaOsc1.connect(f);areaOsc2.connect(f);f.connect(ambGain);areaOsc1.start();areaOsc2.start();}if(audioCtx.state==='suspended')audioCtx.resume();return true;}
+function tone(freq,dur=.16,wave='sine',gain=.16,when=0,dest=sfxGain){if(!audioCtx||!dest)return;const t=audioCtx.currentTime+when,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=wave;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,gain),t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(dest);o.start(t);o.stop(t+dur+.025);}
+function playFx(kind='beep'){if(!soundOn||!ensureAudio())return;const patterns={beep:[[640,.11,'sine'],[820,.09,'sine',.11,.12]],glass:[[1050,.08,'triangle'],[740,.16,'sine',.1,.07]],click:[[320,.045,'square',.07],[480,.06,'square',.06,.055]],liquid:[[420,.2,'sine',.08],[570,.15,'sine',.06,.12]],ignite:[[150,.13,'sawtooth',.09],[390,.22,'triangle',.09,.11],[260,.18,'sawtooth',.06,.28]],focus:[[520,.07,'triangle'],[560,.09,'triangle',.08,.09]],steam:[[170,.3,'sawtooth',.08],[210,.22,'sawtooth',.06,.2]],water:[[300,.25,'sine',.07],[360,.22,'triangle',.05,.18]],door:[[110,.24,'triangle',.12],[85,.2,'sine',.07,.15]],heart:[[72,.22,'sine',.18],[58,.27,'sine',.14,.24],[72,.22,'sine',.18,.57],[58,.27,'sine',.14,.81]],heartbeat:[[86,.2,'sine',.13],[64,.24,'sine',.12,.2]],breath:[[220,.38,'sine',.06],[175,.42,'sine',.045,.45]],drop:[[130,.12,'triangle',.13],[90,.16,'sine',.08,.11]],nope:[[190,.11,'square',.05]],pick:[[520,.09,'sine',.11],[690,.12,'sine',.09,.09]]};const seq=patterns[kind]||patterns.beep;seq.forEach(([f,d,w,g,delay])=>tone(f,d,w,g,delay||0));}
+const notes=[261.63,329.63,392,493.88,440,392,329.63,293.66,349.23,440,523.25,440];let noteIndex=0;
+function startMusic(){if(!ensureAudio())return;musicOn=true;if(musicTimer)clearInterval(musicTimer);musicGain.gain.setTargetAtTime(.16,audioCtx.currentTime,.25);const play=()=>{if(!musicOn||!audioCtx)return;const n=notes[noteIndex%notes.length];tone(n,1.35,'sine',.065,0,musicGain);tone(n/2,1.55,'triangle',.038,.03,musicGain);if(noteIndex%4===0)tone(n*1.5,.7,'sine',.022,.1,musicGain);noteIndex++;};play();musicTimer=setInterval(play,1450);$('musicBtn').textContent='♫ موزیک: روشن';}
+function stopMusic(){musicOn=false;if(musicTimer)clearInterval(musicTimer);musicTimer=null;if(musicGain&&audioCtx)musicGain.gain.setTargetAtTime(0,audioCtx.currentTime,.18);$('musicBtn').textContent='♫ موزیک: خاموش';}
+function toggleMusic(){if(musicOn)stopMusic();else startMusic();}
+function toggleSound(){soundOn=!soundOn;if(sfxGain&&audioCtx)sfxGain.gain.setTargetAtTime(soundOn?.55:0,audioCtx.currentTime,.1);$('soundBtn').textContent='صدا: '+(soundOn?'روشن':'خاموش');if(soundOn)playFx('beep');}
+$('musicBtn').addEventListener('click',toggleMusic);$('soundBtn').addEventListener('click',toggleSound);$('previewAudioBtn').addEventListener('click',()=>{ensureAudio();if(musicOn)stopMusic();else startMusic();playFx('beep');$('previewAudioBtn').textContent=musicOn?'♫ توقف پیش‌نمایش':'♫ پیش‌نمایش موزیک';});
+function areaAt(){const x=camera.position.x,z=camera.position.z;if(z>20)return['ورودی آزمایشگاه',56,84];if(x<-11&&z<0)return['آزمایشگاه زیست‌شناسی',72,112];if(x>-11&&x<11&&z<0)return['آزمایشگاه شیمی',88,132];if(x>11&&z<0)return['بخش میکروسکوپی',64,98];if(x<-11&&z>=0)return['استریلیزاسیون و شست‌وشو',104,156];if(x>-11&&x<11&&z>=0)return['بخش آناتومی',48,76];return['ورودی آزمایشگاه',56,84];}
+function updateAreaSound(){const [name,f1,f2]=areaAt();if(name!==areaNow){areaNow=name;$('status').innerHTML='بخش: '+name+'<br>وضعیت: در حال کاوش';if(audioCtx&&ambGain){areaOsc1.frequency.setTargetAtTime(f1,audioCtx.currentTime,.8);areaOsc2.frequency.setTargetAtTime(f2,audioCtx.currentTime,.8);}}}
+function toggleFlash(){playerLight.intensity=playerLight.intensity>0?0:34;$('touchFlash').textContent=playerLight.intensity>0?'چراغ روشن':'چراغ خاموش';playFx('click');}
+$('touchFlash').addEventListener('click',toggleFlash);
+// --- Mobile and desktop input ---
+function setCamera(){camera.rotation.set(pitch,yaw,0,'YXZ');}
+const lookZone=$('lookZone');lookZone.addEventListener('pointerdown',e=>{if(!gameActive||paused)return;lookPointer=e.pointerId;lastLookX=e.clientX;lastLookY=e.clientY;try{lookZone.setPointerCapture(e.pointerId);}catch(_){}});lookZone.addEventListener('pointermove',e=>{if(e.pointerId!==lookPointer)return;const dx=e.clientX-lastLookX,dy=e.clientY-lastLookY;lastLookX=e.clientX;lastLookY=e.clientY;yaw-=dx*.0044;pitch=clamp(pitch-dy*.0038,-1.25,1.25);setCamera();});function endLook(e){if(e.pointerId===lookPointer)lookPointer=null;}lookZone.addEventListener('pointerup',endLook);lookZone.addEventListener('pointercancel',endLook);lookZone.addEventListener('lostpointercapture',()=>lookPointer=null);
+const stick=$('stickBase'),knob=$('stickKnob');let stickId=null;function moveStick(e){const r=stick.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),max=r.width*.36,len=Math.hypot(dx,dy),scale=len>max?max/len:1,x=dx*scale,y=dy*scale;joyX=x/max;joyY=y/max;knob.style.transform=`translate(${x}px,${y}px)`;}stick.addEventListener('pointerdown',e=>{if(!gameActive||paused)return;stickId=e.pointerId;try{stick.setPointerCapture(e.pointerId);}catch(_){}moveStick(e);});stick.addEventListener('pointermove',e=>{if(e.pointerId===stickId)moveStick(e);});function releaseStick(e){if(e.pointerId!==stickId)return;stickId=null;joyX=joyY=0;knob.style.transform='translate(0,0)';}stick.addEventListener('pointerup',releaseStick);stick.addEventListener('pointercancel',releaseStick);stick.addEventListener('lostpointercapture',()=>{stickId=null;joyX=joyY=0;knob.style.transform='translate(0,0)';});
+$('touchUse').addEventListener('click',interact);$('touchGrab').addEventListener('click',grabOrDrop);
+document.addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='KeyE'||e.code==='Enter'){if(gameActive&&!paused)interact();}if(e.code==='KeyQ'){if(gameActive&&!paused)grabOrDrop();}if(e.code==='Escape'&&gameActive&&!paused){pauseGame();}});document.addEventListener('keyup',e=>{keys[e.code]=false;});
+let pointerLocked=false;renderer.domElement.addEventListener('click',()=>{if(gameActive&&!paused&&!isMobile()){if(!pointerLocked)renderer.domElement.requestPointerLock?.();else interact();}});document.addEventListener('pointerlockchange',()=>{pointerLocked=document.pointerLockElement===renderer.domElement;});document.addEventListener('mousemove',e=>{if(!pointerLocked)return;yaw-=e.movementX*.0022;pitch=clamp(pitch-e.movementY*.0022,-1.25,1.25);setCamera();});
+function pauseGame(){paused=true;$('pauseScreen').hidden=false;document.exitPointerLock?.();playFx('click');}function resumeGame(){paused=false;$('pauseScreen').hidden=true;if(!isMobile())renderer.domElement.requestPointerLock?.();} $('pauseBtn').addEventListener('click',pauseGame);$('resumeBtn').addEventListener('click',resumeGame);$('pauseMusicBtn').addEventListener('click',toggleMusic);
+async function enterGame(){ensureAudio();startMusic();gameActive=true;$('start').hidden=true;playFx('beep');if(isMobile()){try{if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();}catch(_){}try{if(screen.orientation&&screen.orientation.lock)await screen.orientation.lock('landscape');}catch(_){}}else{renderer.domElement.requestPointerLock?.();}}
+$('enterBtn').addEventListener('click',enterGame);
+// Camera starts facing into the work area.
+yaw=0;pitch=0;setCamera();
+// Movement and rendering
+clock=new THREE.Clock();let elapsed=0;const forward=new THREE.Vector3(),right=new THREE.Vector3(),move=new THREE.Vector3();
+function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.045);elapsed+=dt;if(gameActive&&!paused){const keyboardX=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);const keyboardY=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0);const ix=Math.abs(joyX)>.06?joyX:keyboardX,iy=Math.abs(joyY)>.06?-joyY:keyboardY;const run=keys.ShiftLeft||keys.ShiftRight?1.55:1;camera.getWorldDirection(forward);forward.y=0;forward.normalize();right.crossVectors(forward,new THREE.Vector3(0,1,0)).normalize();move.set(0,0,0).addScaledVector(forward,iy).addScaledVector(right,ix);if(move.lengthSq()>1)move.normalize();camera.position.addScaledVector(move,5.2*run*dt);camera.position.x=clamp(camera.position.x,-30.5,30.5);camera.position.z=clamp(camera.position.z,-26.5,26.5);camera.position.y=1.72;if(held){camera.getWorldDirection(direction);const p=camera.position.clone().addScaledVector(direction,1.25);p.y-=.25;held.position.lerp(p,.35);held.quaternion.slerp(camera.quaternion,.35);}updateAreaSound();near=getTarget();$('targetPrompt').style.opacity=near?'1':'0';$('targetPrompt').textContent=near?'◎ تعامل: '+near.userData.name:'';}else{$('targetPrompt').style.opacity='0';}
+for(const fn of animated)fn(elapsed);renderer.render(scene,camera);}
 animate();
-const stick=$('stickBase'),knob=$('stickKnob');let stickId=null;function updateStick(e){const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;let dx=e.clientX-cx,dy=e.clientY-cy;const max=48,len=Math.hypot(dx,dy);if(len>max){dx=dx/len*max;dy=dy/len*max}joyX=dx/max;joyY=dy/max;knob.style.transform=`translate(${dx}px,${dy}px)`}stick.addEventListener('pointerdown',e=>{if(!gameActive)return;stickId=e.pointerId;stick.setPointerCapture(e.pointerId);updateStick(e)});stick.addEventListener('pointermove',e=>{if(e.pointerId===stickId)updateStick(e)});function releaseStick(e){if(e.pointerId!==stickId)return;stickId=null;joyX=joyY=0;knob.style.transform='translate(0,0)'}stick.addEventListener('pointerup',releaseStick);stick.addEventListener('pointercancel',releaseStick);
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+function onResize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,isMobile()?1.45:1.85));}
+addEventListener('resize',onResize);addEventListener('orientationchange',()=>setTimeout(onResize,150));document.addEventListener('visibilitychange',()=>{if(document.hidden&&gameActive&&!paused)pauseGame();});
+// Ensure controls remain usable with touch even when a finger begins on a button.
+['touchUse','touchGrab','touchFlash','musicBtn','soundBtn','helpBtn','pauseBtn','closeDetails','takeBtn','closeHelp','resumeBtn','pauseMusicBtn','enterBtn','previewAudioBtn'].forEach(id=>{const el=$(id);if(el)el.addEventListener('pointerdown',e=>e.stopPropagation());});
 })();
 </script>
 </body>
