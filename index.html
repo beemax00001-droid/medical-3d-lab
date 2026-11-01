@@ -130,14 +130,36 @@ let scene,camera,renderer,clock,playerLight;
 try{
  scene=new THREE.Scene();scene.background=new THREE.Color(0x071522);scene.fog=new THREE.Fog(0x071522,42,105);
  camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,180);camera.position.set(0,1.72,21);camera.rotation.order='YXZ';
- renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,isMobile()?1.45:1.85));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;$('game').appendChild(renderer.domElement);
+ renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio||1,isMobile()?1.7:2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;renderer.sortObjects=true;renderer.info.autoReset=true;$('game').appendChild(renderer.domElement);
 }catch(err){$('start').innerHTML='<div class="glass" style="padding:24px;max-width:520px;text-align:center"><h2>امکان ساخت صحنه‌ی سه‌بعدی وجود ندارد</h2><p>مرورگر یا دستگاه نتوانست WebGL را فعال کند. با Chrome به‌روز و شتاب‌دهی گرافیکی فعال دوباره امتحان کن.</p></div>';return;}
 const hemi=new THREE.HemisphereLight(0xc8eaff,0x26313a,1.6);scene.add(hemi);
 const keyLight=new THREE.DirectionalLight(0xffe7c6,2.25);keyLight.position.set(-23,32,18);keyLight.castShadow=true;keyLight.shadow.mapSize.set(2048,2048);keyLight.shadow.camera.left=-38;keyLight.shadow.camera.right=38;keyLight.shadow.camera.top=38;keyLight.shadow.camera.bottom=-38;keyLight.shadow.bias=-.00025;scene.add(keyLight);
 const fillLight=new THREE.DirectionalLight(0x5acbff,.7);fillLight.position.set(24,16,-20);scene.add(fillLight);
 playerLight=new THREE.SpotLight(0xbdefff,0,22,Math.PI/7,.45,1.5);camera.add(playerLight);playerLight.position.set(0,0,0);const spotTarget=new THREE.Object3D();spotTarget.position.set(0,0,-1);camera.add(spotTarget);playerLight.target=spotTarget;scene.add(camera);
+// --- Procedural studio environment + PBR surface detail (no extra asset files) ---
+function buildStudioEnvironment(){
+  const c=document.createElement('canvas');c.width=1024;c.height=512;const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,512);g.addColorStop(0,'#8fa7b6');g.addColorStop(.38,'#536b78');g.addColorStop(.72,'#263b48');g.addColorStop(1,'#101b25');x.fillStyle=g;x.fillRect(0,0,1024,512);
+  // Bright ceiling panels create believable reflections on stainless steel and glass.
+  for(let row=0;row<2;row++)for(let i=0;i<8;i++){const xx=48+i*128,yy=62+row*82;x.fillStyle='rgba(232,248,255,.92)';x.fillRect(xx,yy,76,18);x.fillStyle='rgba(130,205,235,.2)';x.fillRect(xx-8,yy-8,92,34);}
+  x.fillStyle='rgba(255,222,170,.28)';x.fillRect(80,275,250,8);x.fillStyle='rgba(120,220,255,.24)';x.fillRect(650,245,280,10);
+  const tex=new THREE.CanvasTexture(c);tex.mapping=THREE.EquirectangularReflectionMapping;tex.colorSpace=THREE.SRGBColorSpace;
+  const pmrem=new THREE.PMREMGenerator(renderer);pmrem.compileEquirectangularShader();const env=pmrem.fromEquirectangular(tex).texture;scene.environment=env;tex.dispose();pmrem.dispose();
+}
+function makeNoiseTexture(base='#aab7bc',strength=18,repeatX=4,repeatY=4){
+  const c=document.createElement('canvas');c.width=512;c.height=512;const q=c.getContext('2d');q.fillStyle=base;q.fillRect(0,0,512,512);const im=q.getImageData(0,0,512,512);for(let i=0;i<im.data.length;i+=4){const n=(Math.random()-.5)*strength;im.data[i]=Math.max(0,Math.min(255,im.data[i]+n));im.data[i+1]=Math.max(0,Math.min(255,im.data[i+1]+n));im.data[i+2]=Math.max(0,Math.min(255,im.data[i+2]+n));}q.putImageData(im,0,0);const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(repeatX,repeatY);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t;
+}
+buildStudioEnvironment();
 const mat=(color,roughness=.65,metalness=0,extra={})=>new THREE.MeshStandardMaterial({color,roughness,metalness,...extra});
 const M={floor:mat(0x354550,.88),tile:mat(0x42535b,.65),wall:mat(0xdce5e4,.82),wallBlue:mat(0x9bb8c1,.78),ceiling:mat(0x263845,.9),steel:mat(0x9cabb3,.3,.82),white:mat(0xf0f2eb,.38),cabinet:mat(0xe7ece8,.44),blue:mat(0x187da4,.34,.26),navy:mat(0x183246,.44),glass:new THREE.MeshPhysicalMaterial({color:0x9feaff,transparent:true,opacity:.28,roughness:.08,metalness:.05,side:THREE.DoubleSide}),glassDark:new THREE.MeshPhysicalMaterial({color:0x284e60,transparent:true,opacity:.48,roughness:.14}),red:mat(0xb94b55,.45),green:mat(0x3e9c78,.42),yellow:mat(0xe3b74f,.4,.15),black:mat(0x101820,.42),skin:mat(0xc58e75,.68),organ:mat(0xb9394a,.48),lung:mat(0xc66b7d,.5),bone:mat(0xe5d7b9,.7),purple:mat(0x8068a8,.4)};
+// Subtle micro-texture stops large surfaces looking like flat plastic.
+const floorTex=makeNoiseTexture('#87949a',22,7,6),wallTex=makeNoiseTexture('#d6dfdc',10,5,3),steelTex=makeNoiseTexture('#aebbc2',24,2,2);
+M.floor.map=floorTex;M.floor.bumpMap=floorTex;M.floor.bumpScale=.035;M.floor.roughness=.82;
+M.tile.map=makeNoiseTexture('#aab5b8',15,2,2);M.tile.bumpMap=M.tile.map;M.tile.bumpScale=.018;
+M.wall.map=wallTex;M.wall.bumpMap=wallTex;M.wall.bumpScale=.012;
+M.steel.map=steelTex;M.steel.bumpMap=steelTex;M.steel.bumpScale=.008;M.steel.envMapIntensity=1.35;
+M.glass.envMapIntensity=1.8;M.glass.ior=1.46;M.glass.thickness=.35;M.glass.transmission=.35;
+M.glassDark.envMapIntensity=1.25;M.white.envMapIntensity=.45;M.cabinet.envMapIntensity=.35;
 const interactables=[],animated=[],colliders=[];
 function mesh(parent,geo,material,x=0,y=0,z=0,cast=true){const o=new THREE.Mesh(geo,material);o.position.set(x,y,z);o.castShadow=cast;o.receiveShadow=true;parent.add(o);return o;}
 function box(parent,x,y,z,w,h,d,material,cast=true){return mesh(parent,new THREE.BoxGeometry(w,h,d),material,x,y,z,cast);}
@@ -259,6 +281,36 @@ function wallPanel(x,z,text,color){const p=box(scene,x,2.25,z,3.2,1.65,.12,M.whi
 wallPanel(-32,0,'ایمنی اول است','#a6333b');wallPanel(32,0,'تجهیزات حفاظت فردی','#245c7d');
 // Decorative overhead cable / air ducts
 for(const x of [-20,0,20]){cyl(scene,x,7.5,0,.12,.12,52,M.steel,14).rotation.x=Math.PI/2;for(const z of [-22,-12,0,12,22]){const v=box(scene,x,7.4,z,.45,.5,.55,M.blue,false);}}
+// --- High-detail architectural dressing: service rails, vents, drawer fronts and equipment trim ---
+const detailMetal=mat(0x87969e,.26,.88),detailDark=mat(0x182630,.42,.55),detailWhite=mat(0xe8eeeb,.42,.12),detailGlass=new THREE.MeshPhysicalMaterial({color:0x9ed9e8,roughness:.08,metalness:.04,transparent:true,opacity:.16,transmission:.72,thickness:.25,envMapIntensity:1.6});
+// Continuous stainless service rails and wall-mounted utility outlets.
+for(const z of [-18,-8,8,18]){cyl(scene,-31,3.2,z,.055,.055,62,detailMetal,16).rotation.z=Math.PI/2;cyl(scene,31,3.2,z,.055,.055,62,detailMetal,16).rotation.z=Math.PI/2;}
+for(const x of [-25,-15,-5,5,15,25]){
+  // ceiling air diffusers with individually modelled slats
+  const vent=group(scene,x,7.55,-23);box(vent,0,0,0,2.5,.12,1.1,detailMetal,false);for(let k=0;k<8;k++)box(vent,-1.02+k*.29,.075,0,.035,.035,.86,detailDark,false);
+  // wall power / medical gas outlet panels
+  const panel=box(scene,x,2.25,-28.55,1.35,.72,.08,detailWhite,false);for(let k=0;k<3;k++){cyl(scene,x-.38+k*.38,2.25,-28.47,.09,.09,.055,[M.blue,M.yellow,M.green][k],16).rotation.x=Math.PI/2;}
+}
+// Detailed drawers, pulls and worktop edge trims on every laboratory island.
+for(const [cx,cz,w] of [[-21,-13,10],[0,-13,11],[21,-13,10],[-21,12,10],[0,12,11],[21,12,10]]){
+  box(scene,cx,1.0,cz+.84,w,.055,.055,detailMetal,false);
+  for(const side of [-1,1])for(let i=0;i<4;i++){
+    const xx=cx-w/2+.8+i*((w-1.6)/3);box(scene,xx,.57,cz+side*.47,1.15,.62,.035,detailWhite,false);box(scene,xx,.66,cz+side*.495,.42,.035,.035,detailMetal,false);
+  }
+  // Anti-vibration rubber feet and under-counter shadow plinth.
+  box(scene,cx,.08,cz,w-.2,.12,1.48,detailDark,false);
+}
+// Realistic ceiling luminaires with soft emissive panels and recessed housings.
+for(const x of [-24,-12,0,12,24])for(const z of [-22,-7,8,22]){
+  box(scene,x,7.78,z,3.8,.16,1.45,detailDark,false);
+  const panel=box(scene,x,7.68,z,3.45,.035,1.12,new THREE.MeshStandardMaterial({color:0xeaf7ff,emissive:0xc5eaff,emissiveIntensity:1.1,roughness:.25}),false);
+  // Emissive panel supplies the visible light source without multiplying realtime lights on mobile.
+}
+// Instrument warning labels and floor markings add scale cues.
+for(const [x,z,label] of [[-21,-11,'BIO SAFE'],[0,-11,'CHEMICAL'],[21,-11,'OPTICS'],[-21,14,'STERILE'],[0,14,'ANATOMY']]){
+  const c=document.createElement('canvas');c.width=256;c.height=80;const q=c.getContext('2d');q.fillStyle='#132b39';q.fillRect(0,0,256,80);q.strokeStyle='#79d9e8';q.lineWidth=5;q.strokeRect(3,3,250,74);q.fillStyle='#e7f8fb';q.font='bold 27px Arial';q.textAlign='center';q.fillText(label,128,51);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;mesh(scene,new THREE.PlaneGeometry(1.55,.48),new THREE.MeshBasicMaterial({map:t,transparent:false}),x,2.05,z+.91,false);
+}
+
 // --- Interactive chemistry, microscope and 3D anatomy modules ---
 const moduleMaterials=[
 {id:'H',name:'هیدروژن',formula:'H',kind:'element',number:1,color:'#e8f2ff',info:'عنصر سبک با عدد اتمی ۱؛ در آب و بسیاری از ترکیب‌های زیستی حضور دارد.'},
@@ -394,7 +446,7 @@ clock=new THREE.Clock();let elapsed=0;const forward=new THREE.Vector3(),right=ne
 function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.045);elapsed+=dt;if(gameActive&&!paused){const keyboardX=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);const keyboardY=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0);const ix=Math.abs(joyX)>.06?joyX:keyboardX,iy=Math.abs(joyY)>.06?-joyY:keyboardY;const run=keys.ShiftLeft||keys.ShiftRight?1.55:1;camera.getWorldDirection(forward);forward.y=0;forward.normalize();right.crossVectors(forward,new THREE.Vector3(0,1,0)).normalize();move.set(0,0,0).addScaledVector(forward,iy).addScaledVector(right,ix);if(move.lengthSq()>1)move.normalize();camera.position.addScaledVector(move,5.2*run*dt);camera.position.x=clamp(camera.position.x,-30.5,30.5);camera.position.z=clamp(camera.position.z,-26.5,26.5);camera.position.y=1.72;if(held){camera.getWorldDirection(direction);const p=camera.position.clone().addScaledVector(direction,1.25);p.y-=.25;held.position.lerp(p,.35);held.quaternion.slerp(camera.quaternion,.35);}updateAreaSound();near=getTarget();$('targetPrompt').style.opacity=near?'1':'0';$('targetPrompt').textContent=near?'◎ تعامل: '+near.userData.name:'';}else{$('targetPrompt').style.opacity='0';}
 for(const fn of animated)fn(elapsed);if(microscopeOpen&&Math.floor(elapsed*8)!==Math.floor((elapsed-dt)*8))drawScope(elapsed);renderer.render(scene,camera);}
 animate();
-function onResize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,isMobile()?1.45:1.85));}
+function onResize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,isMobile()?1.7:2));}
 addEventListener('resize',onResize);addEventListener('orientationchange',()=>setTimeout(onResize,150));document.addEventListener('visibilitychange',()=>{if(document.hidden&&gameActive&&!paused)pauseGame();});
 // Ensure controls remain usable with touch even when a finger begins on a button.
 ['touchUse','touchGrab','touchFlash','musicBtn','soundBtn','helpBtn','pauseBtn','closeDetails','takeBtn','closeHelp','resumeBtn','pauseMusicBtn','enterBtn','previewAudioBtn','labBtn','labClose','combineBtn','clearChemBtn','focusBtn','allLayersBtn','insideLayersBtn','resetLayersBtn'].forEach(id=>{const el=$(id);if(el)el.addEventListener('pointerdown',e=>e.stopPropagation());});
